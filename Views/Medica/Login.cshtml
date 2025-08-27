@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="container text-center mt-5">
+    <img src="https://static.vecteezy.com/system/resources/previews/002/566/016/non_2x/medical-appointment-icon-vector.jpg" 
+     alt="Logo" 
+     width="100" 
+     class="mb-3" />
+
+    <h2>Iniciar Sesión</h2>
+
+    <form asp-action="Login" method="post" class="mt-3">
+        <div class="form-group mb-3">
+            <input type="text" name="correo" class="form-control" placeholder="Correo o usuario" required />
+        </div>
+        <div class="form-group mb-2">
+            <input type="password" name="contrasena" class="form-control" placeholder="Contraseña" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+    </form>
+
+    <p class="mt-3">
+        ¿No tienes cuenta? <a asp-action="Register">Regístrate</a>
+    </p>
+</div>
+
+
