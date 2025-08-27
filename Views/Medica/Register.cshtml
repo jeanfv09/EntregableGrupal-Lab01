@@ -1,0 +1,56 @@
+@model Lab01_Grupal.Models.Paciente
+
+@{
+    ViewData["Title"] = "Registro de paciente";
+}
+
+<div class="container mt-5">
+    <h2>Crear cuenta</h2>
+
+    <form asp-action="Register" method="post" class="mt-3">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group mb-2">
+            <input asp-for="Nombre" class="form-control" placeholder="Nombre completo" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <input asp-for="Dni" class="form-control" placeholder="DNI" />
+            <span asp-validation-for="Dni" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <input asp-for="Correo" class="form-control" placeholder="Correo" />
+            <span asp-validation-for="Correo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <input asp-for="Telefono" class="form-control" placeholder="Teléfono" />
+            <span asp-validation-for="Telefono" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <!-- <- Aquí debe ir EXACTAMENTE Contrasena -->
+            <input asp-for="Contrasena" type="password" class="form-control" placeholder="Contraseña" />
+            <span asp-validation-for="Contrasena" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <select asp-for="TipoPaciente" class="form-control">
+                <option value="">Seleccione tipo de paciente</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Recurrente">Recurrente</option>
+            </select>
+            <span asp-validation-for="TipoPaciente" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Crear cuenta</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
