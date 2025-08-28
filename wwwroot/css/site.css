@@ -29,3 +29,17 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.btn-menu {
+  padding: 50px 30px;     
+  font-size: 26px;        
+  font-weight: bold;      
+  border-radius: 15px;    
+  transition: 0.3s;       
+}
+
+
+.btn-menu:hover {
+  background-color: #0d6efd; 
+  color: white;              
+}
