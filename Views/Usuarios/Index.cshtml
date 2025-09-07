@@ -1,0 +1,31 @@
+@model IEnumerable<Lab01_Grupo1.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Lista de Usuarios";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var u in Model)
+    {
+        <tr>
+            <td>@u.IdUsuario</td>
+            <td>@u.UsuarioNombre</td>
+            <td>@u.Nombre</td>
+            <td>@u.Correo</td>
+            <td>@u.Rol</td>
+        </tr>
+    }
+    </tbody>
+</table>
