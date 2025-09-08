@@ -1,31 +1,15 @@
-@model IEnumerable<Lab01_Grupo1.Models.Usuario>
-
 @{
-    ViewData["Title"] = "Lista de Usuarios";
+    ViewData["Title"] = "Dashboard Power BI";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1>@ViewData["Title"]</h1>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Rol</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var u in Model)
-    {
-        <tr>
-            <td>@u.IdUsuario</td>
-            <td>@u.UsuarioNombre</td>
-            <td>@u.Nombre</td>
-            <td>@u.Correo</td>
-            <td>@u.Rol</td>
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="powerbi-container" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe
+    title="Usuario Dashboard"
+    src="<iframe title="h" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiZDhjODJhMDQtZDVlYi00MGRhLWE4MjMtMjdlYzdlNDJmZDQ4IiwidCI6Ijk4MjAxZmVmLWQ5ZjYtNGU2OC04NGY1LWMyNzA1MDc0ZTM0MiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>"
+    frameborder="0"
+    allowFullScreen
+    style="position:absolute; top:0; left:0; width:100%; height:100%;">
+  </iframe>
+</div>
