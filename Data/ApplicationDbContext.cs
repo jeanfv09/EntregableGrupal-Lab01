@@ -8,4 +8,6 @@ public class ApplicationDbContext : DbContext
     {
     }
     public DbSet<Usuario> Usuario { get; set; }
+
+
 }

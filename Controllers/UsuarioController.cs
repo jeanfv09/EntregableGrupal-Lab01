@@ -1,25 +1,81 @@
-using Lab01_Grupo1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using Lab01_Grupo1.Models;
 using System.Threading.Tasks;
+using System.Linq;
 
-namespace Lab01_Grupo1.Controllers
+public class UsuariosController : Controller
 {
-    public class UsuariosController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public UsuariosController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public UsuariosController(ApplicationDbContext context)
+    // Mostrar formulario de login
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+[HttpPost]
+public async Task<IActionResult> Login(string correo, string contrasena)
+{
+    var usuario = await _context.Usuario
+        .FirstOrDefaultAsync(u =>
+            (u.Correo == correo || u.UsuarioNombre == correo) &&
+            u.Clave == contrasena);
+
+    if (usuario != null)
+    {
+        TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
+
+   
+        switch (usuario.Rol?.ToLower())
         {
-            _context = context;
+            case "administrador":
+                return RedirectToAction("Index", "Admin");
+            case "medico":
+                return RedirectToAction("Index", "Admin"); 
+            default:
+                return RedirectToAction("Index", "Usuarios");
+        }
+    }
+
+    ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
+    return View();
+}
+            [HttpGet]
+        public IActionResult Medicos()
+        {
+            return View();
         }
 
-        // GET: /Usuariosy
-        public async Task<IActionResult> Index()
+
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View(new Usuario());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(Usuario usuario)
+    {
+        if (ModelState.IsValid)
         {
-            List<Usuario> lista = await _context.Usuario.ToListAsync();
-            return View(lista);
+            _context.Usuario.Add(usuario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Login");
         }
+
+        return View(usuario);
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var lista = await _context.Usuario.ToListAsync();
+        return View(lista);
     }
 }

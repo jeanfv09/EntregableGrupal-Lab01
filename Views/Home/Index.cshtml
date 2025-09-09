@@ -1,30 +1,18 @@
-﻿@{
-    ViewData["Title"] = "Inicio";
+﻿
+
+
+@{
+    ViewData["Title"] = "Dashboard Power BI";
 }
 
-<div class="container text-center mt-5">
-    <p class="text-muted">Bienvenido a tu portal de citas médicas</p>
+<h1>@ViewData["Title"]</h1>
 
-    <div class="row mt-4">
-        <div class="col-6 col-md-3 mb-3">
-            <a href="#" class="btn btn-outline-primary w-100 p-4">
-                📅 <br /> Agendar cita
-            </a>
-        </div>
-        <div class="col-6 col-md-3 mb-3">
-            <a href="#" class="btn btn-outline-primary w-100 p-4">
-                🏥 <br /> Especialidades
-            </a>
-        </div>
-        <div class="col-6 col-md-3 mb-3">
-            <a href="#" class="btn btn-outline-primary w-100 p-4">
-                📄 <br /> Mis citas
-            </a>
-        </div>
-        <div class="col-6 col-md-3 mb-3">
-            <a href="#" class="btn btn-outline-primary w-100 p-4">
-                ⚙️ <br /> Perfil
-            </a>
-        </div>
-    </div>
+<div class="powerbi-container" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
+  <iframe
+    title="Usuario Dashboard"
+    src="https://app.powerbi.com/reportEmbed?reportId=f3a2b21d-914c-43c5-b536-97687ddc7d8c&autoAuth=true&ctid=98201fef-d9f6-4e68-84f5-c2705074e342"
+    frameborder="0"
+    allowFullScreen
+    style="position:absolute; top:0; left:0; width:100%; height:100%;">
+  </iframe>
 </div>

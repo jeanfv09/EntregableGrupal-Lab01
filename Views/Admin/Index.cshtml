@@ -1,10 +1,10 @@
 @{
-    ViewData["Title"] = "Inicio";
+    ViewData["Title"] = "Panel de Administración";
 }
 
 <style>
     body {
-        background: url('https://static.vecteezy.com/system/resources/previews/006/712/985/non_2x/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg') 
+        background: url('https://wallpapers.com/images/hd/blue-vital-sign-hd-medical-m0tj1swas1gb75k9.jpg') 
                     no-repeat center center fixed;
         background-size: cover;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -40,6 +40,7 @@
         flex-direction: column;
         justify-content: center;
         backdrop-filter: blur(4px);
+        text-decoration: none;
     }
 
     .btn-custom:hover {
@@ -57,29 +58,29 @@
 </style>
 
 <div class="container d-flex flex-column justify-content-center align-items-center min-vh-100 text-center">
-    <h1 class="section-title">Bienvenido a E-CORP</h1>
-    <p class="section-subtitle">Tu portal inteligente de citas médicas</p>
+    <h1 class="section-title">Panel de Administración</h1>
+    <p class="section-subtitle">Accede a las herramientas clave del sistema médico</p>
 
     <div class="row g-4 w-100">
         <div class="col-6 col-md-3">
             <a href="#" class="btn btn-custom w-100">
-                <span>📅</span> Agendar cita
+                <span>📅</span> Agenda de Consultas
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-custom w-100">
+                <span>🤖</span> Chatbot Médico
             </a>
         </div>
             <div class="col-6 col-md-3">
-                <a asp-controller="Usuarios" asp-action="Medicos" class="btn btn-custom w-100">
-                    <span>🏥</span> Lista de Médicos
+                <a asp-controller="Admin" asp-action="Powerbi" class="btn btn-custom w-100">
+                    <span>📊</span> Estadísticas Power BI
                 </a>
             </div>
 
         <div class="col-6 col-md-3">
             <a href="#" class="btn btn-custom w-100">
-                <span>📄</span> Mis citas
-            </a>
-        </div>
-        <div class="col-6 col-md-3">
-            <a href="#" class="btn btn-custom w-100">
-                <span>⚙️</span> Perfil
+                <span>🏥</span> Gestión de Citas
             </a>
         </div>
     </div>
