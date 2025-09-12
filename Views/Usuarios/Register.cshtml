@@ -1,0 +1,117 @@
+@model Lab01_Grupo1.Models.Usuario
+
+@{
+    ViewData["Title"] = "Registro de Usuario";
+}
+
+<style>
+    body {
+        background: url('https://media.istockphoto.com/id/1202959518/es/foto/registro-m%C3%A9dico.jpg?s=612x612&w=0&k=20&c=-z9OseEztlZ_E2b47b8eL1HWImOSGqfXpdO0ipc-d6o=') no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .overlay {
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(4px);
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .fade-in {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .card {
+        background: linear-gradient(145deg, #ffffff, #f9f9f9);
+        border: none;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+</style>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100 fade-in">
+    <div class="overlay shadow-lg p-4 rounded-4" style="max-width: 480px; width: 100%;">
+        <div class="text-center mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/2966/2966485.png" 
+                 alt="Logo Usuario" 
+                 width="80" 
+                 class="mb-3" />
+            <h2 class="fw-bold text-primary">Registro de Paciente</h2>
+            <p class="text-muted">Crea tu cuenta para acceder a la plataforma</p>
+        </div>
+
+        <form asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group mb-3">
+                <label class="form-label fw-semibold">👤 Nombre de usuario</label>
+                <input asp-for="UsuarioNombre" class="form-control rounded-3" placeholder="Ej. ElliotDvp" />
+                <span asp-validation-for="UsuarioNombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label fw-semibold">📝 Nombre completo</label>
+                <input asp-for="Nombre" class="form-control rounded-3" placeholder="Ej. Sandro Hernandez" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label fw-semibold">📧 Correo electrónico</label>
+                <input asp-for="Correo" type="email" class="form-control rounded-3" placeholder="Ej. jhidalgo@mail.com" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label fw-semibold">🔒 Contraseña</label>
+                <input asp-for="Clave" type="password" class="form-control rounded-3" placeholder="••••••••" />
+                <span asp-validation-for="Clave" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="Rol" value="usuario" />
+
+            <button type="submit" class="btn btn-success w-100 rounded-3 py-2 mb-3">
+                ✅ Crear cuenta
+            </button>
+
+            <div class="text-center">
+                <p class="mb-0">¿Ya tienes una cuenta?</p>
+                <a asp-controller="Usuarios" asp-action="Login" class="btn btn-outline-primary w-100 rounded-3 mt-2">
+                    🔑 Iniciar sesión
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

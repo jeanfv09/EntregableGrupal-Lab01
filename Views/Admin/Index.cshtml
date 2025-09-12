@@ -1,0 +1,87 @@
+@{
+    ViewData["Title"] = "Panel de Administración";
+}
+
+<style>
+    body {
+        background: url('https://wallpapers.com/images/hd/blue-vital-sign-hd-medical-m0tj1swas1gb75k9.jpg') 
+                    no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .section-title {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .section-subtitle {
+        font-size: 1.3rem;
+        color: #e0e0e0;
+        margin-bottom: 50px;
+    }
+
+    .btn-custom {
+        font-size: 1.2rem;
+        padding: 25px 15px;
+        border-radius: 18px;
+        transition: all 0.3s ease;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid #ffffff;
+        color: #ffffff;
+        font-weight: 600;
+        height: 130px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+        text-decoration: none;
+    }
+
+    .btn-custom:hover {
+        background: #0077b6;
+        border-color: #0077b6;
+        color: #fff;
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+    }
+
+    .btn-custom span {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="container d-flex flex-column justify-content-center align-items-center min-vh-100 text-center">
+    <h1 class="section-title">Panel de Administración</h1>
+    <p class="section-subtitle">Accede a las herramientas clave del sistema médico</p>
+
+    <div class="row g-4 w-100">
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-custom w-100">
+                <span>📅</span> Agenda de Consultas
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-custom w-100">
+                <span>🤖</span> Chatbot Médico
+            </a>
+        </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Admin" asp-action="Powerbi" class="btn btn-custom w-100">
+                    <span>📊</span> Estadísticas Power BI
+                </a>
+            </div>
+
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-custom w-100">
+                <span>🏥</span> Gestión de Citas
+            </a>
+        </div>
+    </div>
+</div>
