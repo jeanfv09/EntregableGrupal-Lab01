@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Formulario Enviado";
+}
+
+<style>
+    body {
+        background: url('https://static.vecteezy.com/system/resources/previews/006/712/985/non_2x/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg') 
+                    no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+    }
+
+    .message-box {
+        background: rgba(0,0,0,0.6);
+        padding: 40px;
+        border-radius: 12px;
+        max-width: 450px;
+        margin: 100px auto;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #90e0ef;
+    }
+
+    p {
+        margin-bottom: 30px;
+    }
+
+    .btn-home {
+        background: #0077b6;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1rem;
+        border-radius: 8px;
+        color: #fff;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .btn-home:hover {
+        background: #00b4d8;
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="message-box">
+    <h2>¡Gracias por completar tu formulario de salud!</h2>
+    <p>Tu información ha sido registrada y será revisada por el médico en tu cita.</p>
+    <a asp-action="Index" asp-controller="Usuarios" class="btn-home">Volver al Inicio</a>
+</div>
