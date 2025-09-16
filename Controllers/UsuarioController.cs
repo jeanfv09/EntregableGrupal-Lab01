@@ -20,38 +20,38 @@ public class UsuariosController : Controller
         return View();
     }
 
-[HttpPost]
-public async Task<IActionResult> Login(string correo, string contrasena)
-{
-    var usuario = await _context.Usuario
-        .FirstOrDefaultAsync(u =>
-            (u.Correo == correo || u.UsuarioNombre == correo) &&
-            u.Clave == contrasena);
-
-    if (usuario != null)
+    [HttpPost]
+    public async Task<IActionResult> Login(string correo, string contrasena)
     {
-        TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
+        var usuario = await _context.Usuario
+            .FirstOrDefaultAsync(u =>
+                (u.Correo == correo || u.UsuarioNombre == correo) &&
+                u.Clave == contrasena);
 
-   
-        switch (usuario.Rol?.ToLower())
+        if (usuario != null)
         {
-            case "administrador":
-                return RedirectToAction("Index", "Admin");
-            case "medico":
-                return RedirectToAction("Index", "Admin"); 
-            default:
-                return RedirectToAction("Index", "Usuarios");
+            TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
+
+
+            switch (usuario.Rol?.ToLower())
+            {
+                case "administrador":
+                    return RedirectToAction("Index", "Admin");
+                case "medico":
+                    return RedirectToAction("Index", "Admin");
+                default:
+                    return RedirectToAction("Index", "Usuarios");
+            }
         }
+
+        ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
+        return View();
     }
-
-    ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
-    return View();
-}
-            [HttpGet]
-        public IActionResult Medicos()
-        {
-            return View();
-        }
+    [HttpGet]
+    public IActionResult Medicos()
+    {
+        return View();
+    }
 
 
     [HttpGet]
@@ -78,4 +78,26 @@ public async Task<IActionResult> Login(string correo, string contrasena)
         var lista = await _context.Usuario.ToListAsync();
         return View(lista);
     }
+    
+    [HttpGet]
+    public IActionResult FormularioSalud()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult FormularioSalud(string nombre, int edad, double peso, double altura, string sintomas, string antecedentes)
+    {
+        // Aquí podrías guardar en la base de datos si deseas
+        // Ejemplo: guardar en una tabla FormularioSalud
+        
+        return RedirectToAction("FormularioSaludEnviado");
+    }
+
+    [HttpGet]
+    public IActionResult FormularioSaludEnviado()
+    {
+        return View();
+    }
+
 }

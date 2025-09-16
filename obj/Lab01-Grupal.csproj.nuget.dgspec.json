@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
+    "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj": {}
   },
   "projects": {
-    "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
+    "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "projectUniqueName": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj",
         "projectName": "Lab01-Grupal",
-        "projectPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
-        "packagesPath": "C:\\Users\\USUARIO\\.nuget\\packages\\",
-        "outputPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\obj\\",
+        "projectPath": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj",
+        "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\USUARIO\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"

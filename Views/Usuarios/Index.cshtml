@@ -66,12 +66,11 @@
                 <span>📅</span> Agendar cita
             </a>
         </div>
-            <div class="col-6 col-md-3">
-                <a asp-controller="Usuarios" asp-action="Medicos" class="btn btn-custom w-100">
-                    <span>🏥</span> Lista de Médicos
-                </a>
-            </div>
-
+        <div class="col-6 col-md-3">
+            <a asp-controller="Usuarios" asp-action="Medicos" class="btn btn-custom w-100">
+                <span>🏥</span> Lista de Médicos
+            </a>
+        </div>
         <div class="col-6 col-md-3">
             <a href="#" class="btn btn-custom w-100">
                 <span>📄</span> Mis citas
@@ -80,6 +79,18 @@
         <div class="col-6 col-md-3">
             <a href="#" class="btn btn-custom w-100">
                 <span>⚙️</span> Perfil
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <a asp-controller="Usuarios" asp-action="Chatbot" class="btn btn-custom w-100">
+                <span>🤖</span> Chatbot Médico
+            </a>
+        </div>
+
+        <div class="col-6 col-md-3">
+            <a asp-controller="Usuarios" asp-action="FormularioSalud" class="btn btn-custom w-100">
+                <span>📝</span> Formulario Salud Inicial
             </a>
         </div>
     </div>
