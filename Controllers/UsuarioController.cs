@@ -31,7 +31,7 @@ public class UsuariosController : Controller
         if (usuario != null)
         {
             TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
-
+            
 
             switch (usuario.Rol?.ToLower())
             {
@@ -47,6 +47,7 @@ public class UsuariosController : Controller
         ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
         return View();
     }
+
     [HttpGet]
     public IActionResult Medicos()
     {
@@ -78,20 +79,27 @@ public class UsuariosController : Controller
         var lista = await _context.Usuario.ToListAsync();
         return View(lista);
     }
-    
+
     [HttpGet]
     public IActionResult FormularioSalud()
     {
-        return View();
+        return View(new FormularioSaludViewModel());
     }
 
     [HttpPost]
-    public IActionResult FormularioSalud(string nombre, int edad, double peso, double altura, string sintomas, string antecedentes)
+    public IActionResult FormularioSalud(FormularioSaludViewModel model)
     {
-        // Aquí podrías guardar en la base de datos si deseas
-        // Ejemplo: guardar en una tabla FormularioSalud
-        
-        return RedirectToAction("FormularioSaludEnviado");
+        if (ModelState.IsValid)
+        {
+            // Aquí podrías guardar los datos en base de datos si deseas
+            // _context.FormularioSalud.Add(model);
+            // await _context.SaveChangesAsync();
+
+            return RedirectToAction("FormularioSaludEnviado");
+        }
+
+        // Si hay errores de validación, se vuelve a mostrar el formulario
+        return View(model);
     }
 
     [HttpGet]
@@ -100,4 +108,31 @@ public class UsuariosController : Controller
         return View();
     }
 
+
+    // 🔹 NUEVO: Formulario de Contacto
+    [HttpGet]
+    public IActionResult Contacto()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Contacto(ContactoViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            // Aquí podrías guardar en base de datos el mensaje
+            // o incluso enviar un correo si se desea.
+            return RedirectToAction("Gracias");
+        }
+
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult Gracias()
+    {
+        return View();
+    }
 }
+

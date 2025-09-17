@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Gracias";
+}
+
+<style>
+    body {
+        background: url('https://static.vecteezy.com/system/resources/previews/006/712/985/non_2x/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg') 
+                        no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .message-box {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 30px;
+        border-radius: 15px;
+        max-width: 600px;
+        margin: auto;
+        text-align: center;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-custom {
+        background: #0077b6;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        border-radius: 10px;
+        color: #fff;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        background: #00b4d8;
+        transform: translateY(-3px);
+    }
+</style>
+
+<div class="message-box mt-5">
+    <h2 class="section-title">✅ ¡Gracias por contactarnos!</h2>
+    <p>Hemos recibido tu mensaje.<br> Muy pronto te responderemos a tu correo.</p>
+
+    <a asp-controller="Usuarios" asp-action="Index" class="btn-custom">Volver al inicio</a>
+</div>

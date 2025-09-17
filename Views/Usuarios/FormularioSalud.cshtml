@@ -1,3 +1,4 @@
+@model Lab01_Grupo1.Models.FormularioSaludViewModel
 @{
     ViewData["Title"] = "Formulario de Salud";
 }
@@ -38,6 +39,12 @@
         border: none;
     }
 
+    .text-danger {
+        font-size: 0.9rem;
+        color: #ff6b6b !important;
+        margin-bottom: 10px;
+    }
+
     .btn-submit {
         background: #0077b6;
         border: none;
@@ -59,24 +66,34 @@
 <div class="form-container">
     <h2>Formulario de Salud</h2>
     <form asp-action="FormularioSalud" method="post">
-        <label>Nombre Completo:</label>
-        <input type="text" name="nombre" required />
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" placeholder="Ejemplo: Juan Pérez García" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
 
-        <label>Edad:</label>
-        <input type="number" name="edad" required />
+        <label asp-for="Edad"></label>
+        <input asp-for="Edad" type="number" placeholder="Ejemplo: 25" />
+        <span asp-validation-for="Edad" class="text-danger"></span>
 
-        <label>Peso:</label>
-        <input type="number" step="0.1" name="peso" required />
+        <label asp-for="Peso"></label>
+        <input asp-for="Peso" type="number" step="0.1" placeholder="Ejemplo: 70.5" />
+        <span asp-validation-for="Peso" class="text-danger"></span>
 
-        <label>Altura:</label>
-        <input type="number" step="0.1" name="altura" required />
+        <label asp-for="Altura"></label>
+        <input asp-for="Altura" type="number" step="0.1" placeholder="Ejemplo: 175" />
+        <span asp-validation-for="Altura" class="text-danger"></span>
 
-        <label>Síntomas Actuales:</label>
-        <textarea name="sintomas" rows="2"></textarea>
+        <label asp-for="Sintomas"></label>
+        <textarea asp-for="Sintomas" rows="2" placeholder="Ejemplo: Dolor de cabeza, fiebre, cansancio"></textarea>
+        <span asp-validation-for="Sintomas" class="text-danger"></span>
 
-        <label>Antecedentes Médicos:</label>
-        <textarea name="antecedentes" rows="2"></textarea>
+        <label asp-for="Antecedentes"></label>
+        <textarea asp-for="Antecedentes" rows="2" placeholder="Ejemplo: Diabetes, hipertensión, cirugías previas"></textarea>
+        <span asp-validation-for="Antecedentes" class="text-danger"></span>
 
         <button type="submit" class="btn-submit">Enviar Formulario</button>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
