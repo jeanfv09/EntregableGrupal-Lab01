@@ -8,7 +8,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<Usuario> Usuario { get; set; }
-
+    public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Medico> Medicos { get; set; }
 
 }

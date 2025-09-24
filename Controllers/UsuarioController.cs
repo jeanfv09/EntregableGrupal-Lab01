@@ -13,7 +13,7 @@ public class UsuariosController : Controller
         _context = context;
     }
 
-    // Mostrar formulario de login
+
     [HttpGet]
     public IActionResult Login()
     {
@@ -23,7 +23,7 @@ public class UsuariosController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(string correo, string contrasena)
     {
-        var usuario = await _context.Usuario
+        var usuario = await _context.Usuarios
             .FirstOrDefaultAsync(u =>
                 (u.Correo == correo || u.UsuarioNombre == correo) &&
                 u.Clave == contrasena);
@@ -31,7 +31,6 @@ public class UsuariosController : Controller
         if (usuario != null)
         {
             TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
-            
 
             switch (usuario.Rol?.ToLower())
             {
@@ -54,7 +53,6 @@ public class UsuariosController : Controller
         return View();
     }
 
-
     [HttpGet]
     public IActionResult Register()
     {
@@ -66,7 +64,7 @@ public class UsuariosController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Usuario.Add(usuario);
+            _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
             return RedirectToAction("Login");
         }
@@ -76,7 +74,7 @@ public class UsuariosController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var lista = await _context.Usuario.ToListAsync();
+        var lista = await _context.Usuarios.ToListAsync();
         return View(lista);
     }
 
@@ -91,14 +89,9 @@ public class UsuariosController : Controller
     {
         if (ModelState.IsValid)
         {
-            // Aquí podrías guardar los datos en base de datos si deseas
-            // _context.FormularioSalud.Add(model);
-            // await _context.SaveChangesAsync();
-
             return RedirectToAction("FormularioSaludEnviado");
         }
 
-        // Si hay errores de validación, se vuelve a mostrar el formulario
         return View(model);
     }
 
@@ -109,7 +102,6 @@ public class UsuariosController : Controller
     }
 
 
-    // 🔹 NUEVO: Formulario de Contacto
     [HttpGet]
     public IActionResult Contacto()
     {
@@ -121,8 +113,6 @@ public class UsuariosController : Controller
     {
         if (ModelState.IsValid)
         {
-            // Aquí podrías guardar en base de datos el mensaje
-            // o incluso enviar un correo si se desea.
             return RedirectToAction("Gracias");
         }
 
@@ -134,5 +124,27 @@ public class UsuariosController : Controller
     {
         return View();
     }
-}
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(Usuario usuario)
+    {
+        if (ModelState.IsValid)
+        {
+            usuario.Rol = "medico"; 
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            var medico = new Medico
+            {
+                IdUsuario = usuario.IdUsuario
+            };
+
+            _context.Medicos.Add(medico);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+        return View(usuario);
+    }
+}

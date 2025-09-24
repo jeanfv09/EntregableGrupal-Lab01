@@ -1,0 +1,21 @@
+@model IEnumerable<Lab01_Grupo1.Models.Medico>
+
+
+<h2>Lista de Médicos</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var medico in Model)
+    {
+        <tr>
+            <td>@medico.Usuario.Nombre</td>
+            <td>@medico.Usuario.Correo</td>
+        </tr>
+    }
+    </tbody>
+</table>
