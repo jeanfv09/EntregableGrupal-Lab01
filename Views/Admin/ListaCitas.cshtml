@@ -1,0 +1,45 @@
+@model IEnumerable<Lab01_Grupo1.Models.Cita>
+
+@{
+    ViewData["Title"] = "Lista de Citas";
+}
+
+<h2>Lista de Citas Agendadas</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+<div class="col-6 col-md-3">
+    <a asp-controller="Admin" asp-action="ListaCitas" class="btn btn-custom w-100">
+        <span>📅</span> Ver Citas
+    </a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Paciente</th>
+            <th>Médico</th>
+            <th>Especialidad</th>
+            <th>Fecha y Hora</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var cita in Model)
+    {
+        <tr>
+            <td>@cita.CodigoCita</td>
+            <td>@cita.Paciente?.Nombre (@cita.Paciente?.Correo)</td>
+            <td>@cita.Medico?.Usuario?.Nombre</td>
+            <td>@cita.Especialidad</td>
+            <td>@cita.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+            <td>@cita.MotivoConsulta</td>
+            <td>@cita.Estado</td>
+        </tr>
+    }
+    </tbody>
+</table>
