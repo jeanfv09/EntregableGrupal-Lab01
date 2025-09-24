@@ -26,9 +26,11 @@
         <td>@medico.Usuario.Correo</td>
         <td>@medico.Especialidad</td>
         <td>@medico.Perfil?.Universidad</td>
-        <td>
-            @string.Join(", ", medico.Telefonos.Select(t => t.Telefono))
-        </td>
+        <td>@string.Join(", ", medico.Telefonos.Select(t => t.Telefono))</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@medico.IdMedico" class="btn btn-warning btn-sm">Editar</a>
+                <a asp-action="Delete" asp-route-id="@medico.IdMedico" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
     </tr>
 }
 </tbody>

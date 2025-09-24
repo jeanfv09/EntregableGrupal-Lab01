@@ -112,4 +112,120 @@ public IActionResult Create()
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
+    // GET: /Medico/Edit/5
+public async Task<IActionResult> Edit(int id)
+{
+    var medico = await _context.Medicos
+        .Include(m => m.Usuario)
+        .Include(m => m.Perfil)
+        .Include(m => m.Telefonos)
+        .FirstOrDefaultAsync(m => m.IdMedico == id);
+
+    if (medico == null) return NotFound();
+
+    var model = new MedicoCreateViewModel
+    {
+        UsuarioNombre = medico.Usuario.UsuarioNombre,
+        Clave = medico.Usuario.Clave,
+        Nombre = medico.Usuario.Nombre,
+        Correo = medico.Usuario.Correo,
+        Especialidad = medico.Especialidad,
+        Universidad = medico.Perfil?.Universidad ?? "",
+        PaisFormacion = medico.Perfil?.PaisFormacion ?? "",
+        Egreso = medico.Perfil?.Egreso ?? "",
+        Experiencia = medico.Perfil?.Experiencia ?? "",
+        Idiomas = medico.Perfil?.Idiomas ?? "",
+        TipoContrato = medico.Perfil?.TipoContrato ?? "planta",
+        TurnoPreferido = medico.Perfil?.TurnoPreferido ?? "tarde",
+        Telefonos = medico.Telefonos.Select(t => t.Telefono).ToList()
+    };
+
+    return View(model);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Edit(int id, MedicoCreateViewModel model)
+{
+    if (!ModelState.IsValid) return View(model);
+
+    var medico = await _context.Medicos
+        .Include(m => m.Usuario)
+        .Include(m => m.Perfil)
+        .Include(m => m.Telefonos)
+        .FirstOrDefaultAsync(m => m.IdMedico == id);
+
+    if (medico == null) return NotFound();
+
+    // Actualizar Usuario
+    medico.Usuario.Nombre = model.Nombre;
+    medico.Usuario.UsuarioNombre = model.UsuarioNombre;
+    medico.Usuario.Clave = model.Clave; // ahora sí se actualiza
+    medico.Usuario.Correo = model.Correo;
+
+    // Actualizar Médico
+    medico.Especialidad = model.Especialidad;
+
+    // Perfil
+    if (medico.Perfil == null)
+        medico.Perfil = new PerfilMedico { IdMedico = medico.IdMedico };
+
+    medico.Perfil.Universidad = model.Universidad;
+    medico.Perfil.PaisFormacion = model.PaisFormacion;
+    medico.Perfil.Egreso = model.Egreso;
+    medico.Perfil.Experiencia = model.Experiencia;
+    medico.Perfil.Idiomas = model.Idiomas;
+    medico.Perfil.TipoContrato = model.TipoContrato.ToLower();
+    medico.Perfil.TurnoPreferido = model.TurnoPreferido.ToLower();
+
+    // Teléfonos
+    _context.TelefonosMedico.RemoveRange(medico.Telefonos);
+    medico.Telefonos = model.Telefonos
+        .Where(t => !string.IsNullOrWhiteSpace(t))
+        .Select(t => new TelefonoMedico { IdMedico = medico.IdMedico, Telefono = t })
+        .ToList();
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
+
+
+// GET: /Medico/Delete/5
+public async Task<IActionResult> Delete(int id)
+{
+    var medico = await _context.Medicos
+        .Include(m => m.Usuario)
+        .FirstOrDefaultAsync(m => m.IdMedico == id);
+
+    if (medico == null) return NotFound();
+
+    return View(medico);
+}
+
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var medico = await _context.Medicos
+        .Include(m => m.Usuario)
+        .Include(m => m.Perfil)
+        .Include(m => m.Telefonos)
+        .FirstOrDefaultAsync(m => m.IdMedico == id);
+
+    if (medico == null) return NotFound();
+
+    if (medico.Perfil != null)
+        _context.PerfilesMedico.Remove(medico.Perfil);
+
+    if (medico.Telefonos.Any())
+        _context.TelefonosMedico.RemoveRange(medico.Telefonos);
+
+    _context.Usuarios.Remove(medico.Usuario);
+    _context.Medicos.Remove(medico);
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
+
+
 }
