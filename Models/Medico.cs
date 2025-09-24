@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace Lab01_Grupo1.Models
 {
@@ -14,8 +15,14 @@ namespace Lab01_Grupo1.Models
         [Column("id_usuario")]
         public int IdUsuario { get; set; }
 
-        // Relación 1:1 con Usuario
+        [Required]
+        [Column("especialidad")]
+        public string Especialidad { get; set; } = null!;
+
         [ForeignKey("IdUsuario")]
         public Usuario Usuario { get; set; } = null!;
+
+        public PerfilMedico? Perfil { get; set; }
+        public ICollection<TelefonoMedico> Telefonos { get; set; } = new List<TelefonoMedico>();
     }
 }

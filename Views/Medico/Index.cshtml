@@ -1,21 +1,36 @@
 @model IEnumerable<Lab01_Grupo1.Models.Medico>
 
+<h2>Lista de Médicos actual</h2>
 
-<h2>Lista de Medicos actual</h2>
+<p>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="bi bi-person-plus"></i> Agregar Médico
+    </a>
+</p>
+
 <table class="table">
     <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Correo</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var medico in Model)
-    {
-        <tr>
-            <td>@medico.Usuario.Nombre</td>
-            <td>@medico.Usuario.Correo</td>
-        </tr>
-    }
-    </tbody>
+    <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Especialidad</th>
+        <th>Universidad</th>
+        <th>Teléfonos</th>
+    </tr>
+</thead>
+<tbody>
+@foreach (var medico in Model)
+{
+    <tr>
+        <td>@medico.Usuario.Nombre</td>
+        <td>@medico.Usuario.Correo</td>
+        <td>@medico.Especialidad</td>
+        <td>@medico.Perfil?.Universidad</td>
+        <td>
+            @string.Join(", ", medico.Telefonos.Select(t => t.Telefono))
+        </td>
+    </tr>
+}
+</tbody>
+
 </table>
