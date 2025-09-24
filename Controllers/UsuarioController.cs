@@ -59,18 +59,22 @@ public class UsuariosController : Controller
         return View(new Usuario());
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Register(Usuario usuario)
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Register(Usuario usuario)
+{
+    if (ModelState.IsValid)
     {
-        if (ModelState.IsValid)
-        {
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Login");
-        }
+        _context.Usuarios.Add(usuario);
+        await _context.SaveChangesAsync();
 
-        return View(usuario);
+        // Redirigir al Index de Medico
+        return RedirectToAction("Index", "Medico");
     }
+
+    return View(usuario);
+}
+
 
     public async Task<IActionResult> Index()
     {
