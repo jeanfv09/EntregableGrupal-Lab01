@@ -1,4 +1,5 @@
-namespace Lab01_Grupal.Models;
+
+namespace Lab01_Grupo1.Models;
 
 public class ErrorViewModel
 {

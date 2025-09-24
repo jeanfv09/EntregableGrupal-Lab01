@@ -62,9 +62,10 @@
 
     <div class="row g-4 w-100">
         <div class="col-6 col-md-3">
-            <a href="#" class="btn btn-custom w-100">
-                <span>📅</span> Agendar cita
+            <a asp-controller="Usuario" asp-action="Citas" class="btn btn-custom w-100">
+                <span>📝</span> Formulario Salud Inicial
             </a>
+
         </div>
         <div class="col-6 col-md-3">
             <a asp-controller="Usuarios" asp-action="Medicos" class="btn btn-custom w-100">
@@ -87,6 +88,11 @@
                 <span>🤖</span> Chatbot Médico
             </a>
         </div>
+        <div class="col-6 col-md-3">
+    <a asp-controller="Usuarios" asp-action="Citas" class="btn btn-custom w-100">
+        <span>📅</span> Agendar Cita
+    </a>
+</div>
 
         <div class="col-6 col-md-3">
             <a asp-controller="Usuarios" asp-action="FormularioSalud" class="btn btn-custom w-100">

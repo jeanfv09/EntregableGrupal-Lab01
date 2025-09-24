@@ -1,0 +1,83 @@
+@model Lab01_Grupo1.Models.CitaViewModel
+
+@{
+    ViewData["Title"] = "Agendar Cita";
+}
+
+<div class="row">
+    <!-- 📋 Columna izquierda: listado de médicos -->
+    <div class="col-md-8">
+        <h2>Lista de Médicos</h2>
+
+        <form method="get" asp-action="Citas" class="row mb-4">
+            <div class="col-md-4">
+                <input type="text" name="nombre" value="@ViewData["NombreFiltro"]"
+                       class="form-control" placeholder="Buscar por nombre..." />
+            </div>
+            <div class="col-md-4">
+                <select name="especialidad" class="form-control">
+                    <option value="">-- Todas las especialidades --</option>
+                    @foreach (var esp in ViewBag.Especialidades as List<string>)
+                    {
+                        <option value="@esp" selected="@(ViewData["EspecialidadFiltro"]?.ToString() == esp)">
+                            @esp
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Especialidad</th>
+                    <th>Universidad</th>
+                    <th>Teléfonos</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var medico in Model.Medicos)
+            {
+                <tr>
+                    <td>@medico.Usuario.Nombre</td>
+                    <td>@medico.Usuario.Correo</td>
+                    <td>@medico.Especialidad</td>
+                    <td>@medico.Perfil?.Universidad</td>
+                    <td>@string.Join(", ", medico.Telefonos.Select(t => t.Telefono))</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 📝 Columna derecha: formulario de agendar cita -->
+    <div class="col-md-4">
+        <h2>Agendar Cita</h2>
+
+        <form asp-action="AgendarCita" method="post">
+            <div class="mb-3">
+                <label class="form-label">Médico</label>
+                <select asp-for="IdMedico" class="form-control" asp-items="@(new SelectList(Model.Medicos, "IdMedico", "Usuario.Nombre"))">
+                    <option value="">-- Selecciona un médico --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Motivo de consulta</label>
+                <textarea asp-for="MotivoConsulta" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fecha y hora</label>
+                <input asp-for="FechaHora" type="datetime-local" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Agendar</button>
+        </form>
+    </div>
+</div>

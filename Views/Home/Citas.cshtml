@@ -1,0 +1,52 @@
+@model IEnumerable<Lab01_Grupo1.Models.Medico>
+
+
+
+@{
+    ViewData["Title"] = "Agendar Cita";
+}
+
+<h2>Agendar Cita</h2>
+
+<form method="get" asp-action="Citas" class="row mb-4">
+    <div class="col-md-4">
+        <input type="text" name="nombre" value="@ViewData["NombreFiltro"]" 
+               class="form-control" placeholder="Buscar por nombre..." />
+    </div>
+    <div class="col-md-4">
+        <select name="especialidad" class="form-control">
+            <option value="">-- Todas las especialidades --</option>
+            @foreach (var esp in ViewBag.Especialidades as List<string>)
+            {
+                <option value="@esp" selected="@(ViewData["EspecialidadFiltro"]?.ToString() == esp)">
+                    @esp
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Correo</th>
+            <th>Universidad</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var medico in Model)
+    {
+        <tr>
+            <td>@medico.Usuario.Nombre</td>
+            <td>@medico.Especialidad</td>
+            <td>@medico.Usuario.Correo</td>
+            <td>@medico.Perfil?.Universidad</td>
+        </tr>
+    }
+    </tbody>
+</table>

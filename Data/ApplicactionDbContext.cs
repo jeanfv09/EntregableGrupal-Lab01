@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Medico> Medicos { get; set; }
     public DbSet<PerfilMedico> PerfilesMedico { get; set; }
     public DbSet<TelefonoMedico> TelefonosMedico { get; set; }
+    public DbSet<Cita> Citas { get; set; }
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     base.OnModelCreating(modelBuilder);
