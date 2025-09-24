@@ -37,5 +37,7 @@ namespace Lab01_Grupo1.Models
         public string TurnoPreferido { get; set; } = null!;
 
         public List<string> Telefonos { get; set; } = new();
+        public int IdMedico { get; set; }
+
     }
 }

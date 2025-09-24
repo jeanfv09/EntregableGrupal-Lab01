@@ -1,0 +1,105 @@
+@model Lab01_Grupo1.Models.MedicoCreateViewModel
+
+<h2>Editar Médico</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="IdMedico" />
+
+    <h4>Datos de Usuario</h4>
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="UsuarioNombre" class="form-label"></label>
+        <input asp-for="UsuarioNombre" class="form-control" />
+        <span asp-validation-for="UsuarioNombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Clave" class="form-label"></label>
+        <input asp-for="Clave" type="password" class="form-control" />
+        <span asp-validation-for="Clave" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Correo" class="form-label"></label>
+        <input asp-for="Correo" type="email" class="form-control" />
+        <span asp-validation-for="Correo" class="text-danger"></span>
+    </div>
+
+    <h4>Datos de Médico</h4>
+    <div class="mb-3">
+        <label asp-for="Especialidad" class="form-label"></label>
+        <input asp-for="Especialidad" class="form-control" />
+        <span asp-validation-for="Especialidad" class="text-danger"></span>
+    </div>
+
+    <h4>Perfil Médico</h4>
+    <div class="mb-3">
+        <label asp-for="Universidad" class="form-label"></label>
+        <input asp-for="Universidad" class="form-control" />
+        <span asp-validation-for="Universidad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PaisFormacion" class="form-label"></label>
+        <input asp-for="PaisFormacion" class="form-control" />
+        <span asp-validation-for="PaisFormacion" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Egreso" class="form-label"></label>
+        <input asp-for="Egreso" class="form-control" />
+        <span asp-validation-for="Egreso" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Experiencia" class="form-label"></label>
+        <input asp-for="Experiencia" class="form-control" />
+        <span asp-validation-for="Experiencia" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Idiomas" class="form-label"></label>
+        <input asp-for="Idiomas" class="form-control" />
+        <span asp-validation-for="Idiomas" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TipoContrato" class="form-label"></label>
+        <select asp-for="TipoContrato" class="form-control">
+            <option value="planta">Planta</option>
+            <option value="temporal">Temporal</option>
+            <option value="externo">Externo</option>
+        </select>
+        <span asp-validation-for="TipoContrato" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TurnoPreferido" class="form-label"></label>
+        <select asp-for="TurnoPreferido" class="form-control">
+            <option value="tarde">Tarde</option>
+            <option value="noche">Noche</option>
+            <option value="mañana">Mañana</option>
+        </select>
+        <span asp-validation-for="TurnoPreferido" class="text-danger"></span>
+    </div>
+
+    <h4>Teléfonos</h4>
+    <div id="telefonos">
+        @for (int i = 0; i < Model.Telefonos.Count; i++)
+        {
+            <input asp-for="Telefonos[i]" class="form-control mb-2" placeholder="Teléfono @(i+1)" />
+            <span asp-validation-for="Telefonos[i]" class="text-danger"></span>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
