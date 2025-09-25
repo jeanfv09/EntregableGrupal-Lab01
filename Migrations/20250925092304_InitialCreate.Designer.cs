@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab01_Grupal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250924100612_AddCodigoCitaToCita")]
-    partial class AddCodigoCitaToCita
+    [Migration("20250925092304_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,29 @@ namespace Lab01_Grupal.Migrations
                     b.HasIndex("IdPaciente");
 
                     b.ToTable("Cita");
+                });
+
+            modelBuilder.Entity("Lab01_Grupo1.Models.Contacto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contactos");
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.Medico", b =>
