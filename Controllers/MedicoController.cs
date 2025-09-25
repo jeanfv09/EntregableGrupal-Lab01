@@ -13,6 +13,14 @@ public class MedicoController : Controller
         _context = context;
     }
 
+
+    
+
+    public IActionResult Medicos()
+    {
+        return RedirectToAction("Index", "Medico");
+    }
+
     // GET: /Medico
     public async Task<IActionResult> Index()
     {
