@@ -168,7 +168,11 @@ public async Task<IActionResult> Edit(int id, MedicoCreateViewModel model)
     // Actualizar Usuario
     medico.Usuario.Nombre = model.Nombre;
     medico.Usuario.UsuarioNombre = model.UsuarioNombre;
-    medico.Usuario.Clave = model.Clave; // ahora sí se actualiza
+    if (!string.IsNullOrWhiteSpace(model.Clave) && model.Clave != "****")
+    {
+        medico.Usuario.Clave = model.Clave;
+    }
+
     medico.Usuario.Correo = model.Correo;
 
     // Actualizar Médico
