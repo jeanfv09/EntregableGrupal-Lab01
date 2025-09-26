@@ -37,5 +37,16 @@ namespace Lab01_Grupo1.Controllers
 
             return View(citas);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ListaUsuarios()
+        {
+            var usuarios = await _context.Usuarios
+                .Where(u => u.Rol == "usuario")
+                .ToListAsync();
+
+            return View(usuarios);
+        }
+
     }
 }
