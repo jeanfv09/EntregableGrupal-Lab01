@@ -1,0 +1,11 @@
+@model Lab01_Grupo1.Models.Usuario
+
+<h2>Eliminar Usuario</h2>
+
+<p>¿Estás seguro que deseas eliminar el usuario <strong>@Model.Nombre</strong>?</p>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="IdUsuario" />
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="ListaUsuarios" class="btn btn-secondary">Cancelar</a>
+</form>
