@@ -3,18 +3,36 @@ using Microsoft.EntityFrameworkCore;
 using Lab01_Grupo1.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Lab01_Grupo1.Controllers
 {
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
+         private readonly IDistributedCache _cache;
+    private readonly ILogger<AdminController> _logger;
+    private readonly TimeSpan _cacheTtl;
+    private readonly JsonSerializerOptions _jsonOptions = new()  {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+    };
 
-        public AdminController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+public AdminController(
+        ApplicationDbContext context,
+        IDistributedCache cache,
+        ILogger<AdminController> logger,
+        IConfiguration configuration)
+    {
+        _context = context;
+        _cache = cache;
+        _logger = logger;
 
+        var ttlMinutes = configuration.GetValue<int>("Redis:CacheTtlMinutes", 2);
+        _cacheTtl = TimeSpan.FromMinutes(Math.Min(ttlMinutes, 2));
+    }
         public IActionResult Index()
         {
             return View();
@@ -40,13 +58,60 @@ namespace Lab01_Grupo1.Controllers
 
         [HttpGet]
         public async Task<IActionResult> ListaUsuarios()
-        {
-            var usuarios = await _context.Usuarios
-                .Where(u => u.Rol == "usuario")
-                .ToListAsync();
+{
+    var cacheKey = "admin:usuarios:lista";
 
-            return View(usuarios);
+    try
+    {
+        // Intentar obtener desde cache
+        var cached = await _cache.GetStringAsync(cacheKey);
+        if (!string.IsNullOrEmpty(cached))
+        {
+            _logger.LogInformation("Cache hit ListaUsuarios");
+            var cachedList = JsonSerializer.Deserialize<List<Usuario>>(cached, _jsonOptions)
+                             ?? new List<Usuario>();
+            return View(cachedList);
         }
+    }
+    catch (Exception ex)
+    {
+        _logger.LogWarning(ex, "Error leyendo cache en ListaUsuarios; proceder a DB");
+    }
+
+    // Cache miss -> consultar DB con proyección explícita para evitar entidades tracked/proxies
+    var usuarios = await _context.Set<Usuario>()
+        .Where(u => u.Rol == "usuario")
+        .Select(u => new Usuario
+        {
+            IdUsuario = u.IdUsuario,
+            UsuarioNombre = u.UsuarioNombre,
+            Nombre = u.Nombre,
+            Correo = u.Correo,
+            Rol = u.Rol
+            // No incluyas Clave por seguridad
+        })
+        .AsNoTracking()
+        .ToListAsync();
+
+    // Guardar en cache (JSON)
+    try
+    {
+        var serialized = JsonSerializer.Serialize(usuarios, _jsonOptions);
+        var options = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = _cacheTtl
+        };
+        await _cache.SetStringAsync(cacheKey, serialized, options);
+        _logger.LogInformation("ListaUsuarios guardada en cache");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogWarning(ex, "Error guardando cache en ListaUsuarios");
+    }
+
+    return View(usuarios);
+}
+
 
         // GET: Editar Usuario
     [HttpGet]
