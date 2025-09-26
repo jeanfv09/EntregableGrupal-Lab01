@@ -20,32 +20,39 @@ public class UsuariosController : Controller
         return View();
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Login(string correo, string contrasena)
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Login(string correo, string contrasena)
+{
+    var usuario = await _context.Usuarios
+        .FirstOrDefaultAsync(u =>
+            (u.Correo == correo || u.UsuarioNombre == correo) &&
+            u.Clave == contrasena);
+
+    if (usuario != null)
     {
-        var usuario = await _context.Usuarios
-            .FirstOrDefaultAsync(u =>
-                (u.Correo == correo || u.UsuarioNombre == correo) &&
-                u.Clave == contrasena);
+        // ✅ Guarda el nombre en sesión
+        HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre ?? usuario.UsuarioNombre ?? "Usuario");
 
-        if (usuario != null)
+        // ✅ Guarda también el rol en sesión
+        HttpContext.Session.SetString("UsuarioRol", usuario.Rol ?? "usuario");
+
+        TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
+
+        switch (usuario.Rol?.ToLower())
         {
-            TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
-
-            switch (usuario.Rol?.ToLower())
-            {
-                case "administrador":
-                    return RedirectToAction("Index", "Admin");
-                case "medico":
-                    return RedirectToAction("Index", "Admin");
-                default:
-                    return RedirectToAction("Index", "Usuarios");
-            }
+            case "administrador":
+            case "medico":
+                return RedirectToAction("Index", "Admin");
+            default:
+                return RedirectToAction("Index", "Usuarios");
         }
-
-        ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
-        return View();
     }
+
+    ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
+    return View();
+}
+
 
     [HttpGet]
     public IActionResult Medicos()
@@ -58,7 +65,6 @@ public class UsuariosController : Controller
     {
         return View(new Usuario());
     }
-
 [HttpPost]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Register(Usuario usuario)
@@ -68,13 +74,20 @@ public async Task<IActionResult> Register(Usuario usuario)
         _context.Usuarios.Add(usuario);
         await _context.SaveChangesAsync();
 
-        // Redirigir al Index de Medico
-        return RedirectToAction("Index", "Medico");
+        // ✅ Guarda el nombre en sesión al registrarse
+        HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre ?? usuario.UsuarioNombre ?? "Usuario");
+
+        return RedirectToAction("Index", "Usuarios");
     }
 
     return View(usuario);
 }
 
+public IActionResult Logout()
+{
+    HttpContext.Session.Clear();
+    return RedirectToAction("Index", "Home");
+}
 
     public async Task<IActionResult> Index()
     {

@@ -1,32 +1,34 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - E-CORP</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Lab01_Grupal.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/Lab01_Grupal.styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
 
     <style>
         body {
-            background-color: #f8f9fa; /* gris muy claro */
+            background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .navbar {
-            background: linear-gradient(90deg, #ffffff, #e9f5ff); /* blanco a celeste suave */
+            background: linear-gradient(90deg, #ffffff, #e9f5ff);
         }
         .navbar-brand {
             font-weight: bold;
-            color: #0077b6 !important; /* azul elegante */
+            color: #0077b6 !important;
         }
         .nav-link {
-            color: #495057 !important; /* gris oscuro elegante */
+            color: #495057 !important;
             transition: color 0.3s ease;
         }
         .nav-link:hover {
-            color: #0077b6 !important; /* azul elegante al pasar mouse */
+            color: #0077b6 !important;
         }
         footer {
             background-color: #ffffff;
@@ -46,53 +48,86 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Header / Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+<header>
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container">
+            @if (HttpContextAccessor.HttpContext.Session.GetString("UsuarioNombre") != null)
+            {
+                var rol = HttpContextAccessor.HttpContext.Session.GetString("UsuarioRol");
+
+                if (!string.IsNullOrEmpty(rol) && rol.ToLower() == "administrador")
+                {
+                    <a class="navbar-brand" asp-controller="Admin" asp-action="Index">
+                        <i class="bi bi-heart-pulse me-2"></i> E-CORP
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-brand" asp-controller="Usuarios" asp-action="Index">
+                        <i class="bi bi-heart-pulse me-2"></i> E-CORP
+                    </a>
+                }
+            }
+            else
+            {
+                <!-- 🔹 No hace nada si no está logeado -->
+                <a class="navbar-brand" href="javascript:void(0)">
                     <i class="bi bi-heart-pulse me-2"></i> E-CORP
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Menú">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            }
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("UsuarioNombre") != null)
+                    {
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Usuarios" asp-action="Register">
-                                <i class="bi bi-person-plus"></i> Registrarse
-                            </a>
+                            <span class="nav-link">
+                                <i class="bi bi-person-circle"></i>
+                                Hola, @HttpContextAccessor.HttpContext.Session.GetString("UsuarioNombre")
+                            </span>
                         </li>
                         <li class="nav-item">
-                                <a class="nav-link" asp-controller="Medico" asp-action="Index">
-                                    <i class="bi bi-people"></i> Agregar Medicos
-                                </a>
-                            </li>
-
+                            <a class="nav-link" asp-controller="Usuarios" asp-action="Logout">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Usuarios" asp-action="Login">
                                 <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
                             </a>
                         </li>
-                    </ul>
-                </div>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Usuarios" asp-action="Register">
+                                <i class="bi bi-person-plus"></i> Registrarse
+                            </a>
+                        </li>
+                    }
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
+
+
+
 
     <!-- Main -->
     <main role="main" class="flex-grow-1 container py-4">
         @RenderBody()
     </main>
 
-
-
     <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
