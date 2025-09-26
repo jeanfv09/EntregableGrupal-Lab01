@@ -1,0 +1,36 @@
+@model List<Lab01_Grupo1.Models.Cita>
+
+@{
+    ViewData["Title"] = "Registro de Consultas";
+}
+
+
+<h2>📋 Registro de Consultas</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Paciente</th>
+            <th>Especialidad</th>
+            <th>Médico</th>
+            <th>Fecha y Hora</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var c in Model)
+    {
+        <tr>
+            <td>@c.CodigoCita</td>
+            <td>@c.Paciente?.Nombre</td>
+            <td>@c.Especialidad</td>
+            <td>@c.Medico?.Usuario?.Nombre</td>
+            <td>@c.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+            <td>@c.MotivoConsulta</td>
+            <td>@c.Estado</td>
+        </tr>
+    }
+    </tbody>
+</table>

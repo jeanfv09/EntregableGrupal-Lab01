@@ -1,0 +1,9 @@
+@{
+    ViewData["Title"] = "Cita Confirmada";
+}
+
+<h2>✅ Tu cita ha sido agendada con éxito</h2>
+<p><strong>Código de cita:</strong> @ViewBag.CodigoCita</p>
+<p>Recibirás un correo o confirmación del médico asignado.</p>
+
+<a asp-controller="Usuarios" asp-action="Index" class="btn btn-primary">Volver al inicio</a>

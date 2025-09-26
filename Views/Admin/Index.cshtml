@@ -64,11 +64,11 @@
     <div class="row g-4 w-100">
         
         <div class="col-6 col-md-3">
-<a asp-controller="Medico" asp-action="Index" class="btn btn-custom w-100">
-    <span>👨‍⚕️</span> Lista de Médicos
-</a>
-
+            <a asp-controller="Medico" asp-action="Index" class="btn btn-custom w-100">
+                <span>👨‍⚕️</span> Lista de Médicos
+            </a>
         </div>
+
         <div class="col-6 col-md-3">
             <a asp-controller="Admin" asp-action="ListaUsuarios" class="btn btn-custom w-100">
                 <span>👥</span> Lista de Usuarios
@@ -80,9 +80,24 @@
                 <span>📊</span> Estadísticas Power BI
             </a>
         </div>
+
         <div class="col-6 col-md-3">
-            <a href="#" class="btn btn-custom w-100">
+            <a asp-controller="Admin" asp-action="ListaCitas" class="btn btn-custom w-100">
                 <span>🏥</span> Gestión de Citas
+            </a>
+        </div>
+
+        <!-- ✅ Botón: Registro de Consultas -->
+        <div class="col-6 col-md-3">
+            <a asp-controller="Admin" asp-action="RegistroConsultas" class="btn btn-custom w-100">
+                <span>📝</span> Registro de Consultas
+            </a>
+        </div>
+
+        <!-- ✅ Botón: Registro de Contactos -->
+        <div class="col-6 col-md-3">
+            <a asp-controller="Admin" asp-action="RegistroContacto" class="btn btn-custom w-100">
+                <span>📧</span> Registro de Contactos
             </a>
         </div>
     </div>

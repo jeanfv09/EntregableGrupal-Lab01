@@ -38,6 +38,20 @@ namespace Lab01_Grupo1.Controllers
             return View(citas);
         }
 
+        // ✅ Registro de Consultas (para administrador)
+        [HttpGet]
+        public async Task<IActionResult> RegistroConsultas()
+        {
+            var consultas = await _context.Citas
+                .Include(c => c.Paciente)
+                .Include(c => c.Medico)
+                    .ThenInclude(m => m.Usuario)
+                .OrderByDescending(c => c.FechaHora)
+                .ToListAsync();
+
+            return View(consultas);
+        }
+
         [HttpGet]
         public async Task<IActionResult> ListaUsuarios()
         {
@@ -49,89 +63,97 @@ namespace Lab01_Grupo1.Controllers
         }
 
         // GET: Editar Usuario
-    [HttpGet]
-    public async Task<IActionResult> Editar(int id)
-    {
-        var usuario = await _context.Usuarios.FindAsync(id);
-        if (usuario == null)
+        [HttpGet]
+        public async Task<IActionResult> Editar(int id)
         {
-            return NotFound();
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
         }
-        return View(usuario);
-    }
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Editar(int id, Lab01_Grupo1.Models.Usuario model)
-{
-    if (id != model.IdUsuario) return BadRequest();
 
-    if (!ModelState.IsValid)
-    {
-        return View(model);
-    }
-
-    // Recuperar entidad completa desde la BDD
-    var usuario = await _context.Usuarios
-        .FirstOrDefaultAsync(u => u.IdUsuario == id);
-
-    if (usuario == null) return NotFound();
-
-    // Actualizar sólo campos permitidos (evita overposting)
-    usuario.UsuarioNombre = model.UsuarioNombre;
-    usuario.Nombre = model.Nombre;
-    usuario.Correo = model.Correo;
-    // Si quieres permitir cambiar rol desde la UI:
-    usuario.Rol = model.Rol;
-
-    // Si tienes un campo Clave y quieres permitir actualización con protección:
-    if (!string.IsNullOrWhiteSpace(model.Clave) && model.Clave != "****")
-    {
-        usuario.Clave = model.Clave;
-    }
-
-    try
-    {
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(ListaUsuarios));
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!await _context.Usuarios.AnyAsync(e => e.IdUsuario == id)) return NotFound();
-        throw;
-    }
-    catch (Exception ex)
-    {
-        // Evita que el fallo del logger escalone la excepción. Registra en consola durante depuración.
-        Console.Error.WriteLine("Error al guardar Usuario: " + ex);
-        ModelState.AddModelError("", "Ocurrió un error al guardar. Intenta nuevamente más tarde.");
-        return View(model);
-    }
-}
-
-
-    [HttpGet]
-    public async Task<IActionResult> Eliminar(int id)
-    {
-        var usuario = await _context.Usuarios.FindAsync(id);
-        if (usuario == null)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(int id, Lab01_Grupo1.Models.Usuario model)
         {
-            return NotFound();
-        }
-        return View(usuario);
-    }
+            if (id != model.IdUsuario) return BadRequest();
 
-    // POST: Confirmar Eliminación
-    [HttpPost, ActionName("Eliminar")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EliminarConfirmado(int id)
-    {
-        var usuario = await _context.Usuarios.FindAsync(id);
-        if (usuario != null)
-        {
-            _context.Usuarios.Remove(usuario);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Recuperar entidad completa desde la BDD
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.IdUsuario == id);
+
+            if (usuario == null) return NotFound();
+
+            // Actualizar sólo campos permitidos (evita overposting)
+            usuario.UsuarioNombre = model.UsuarioNombre;
+            usuario.Nombre = model.Nombre;
+            usuario.Correo = model.Correo;
+            // Si quieres permitir cambiar rol desde la UI:
+            usuario.Rol = model.Rol;
+
+            // Si tienes un campo Clave y quieres permitir actualización con protección:
+            if (!string.IsNullOrWhiteSpace(model.Clave) && model.Clave != "****")
+            {
+                usuario.Clave = model.Clave;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ListaUsuarios));
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _context.Usuarios.AnyAsync(e => e.IdUsuario == id)) return NotFound();
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Evita que el fallo del logger escalone la excepción. Registra en consola durante depuración.
+                Console.Error.WriteLine("Error al guardar Usuario: " + ex);
+                ModelState.AddModelError("", "Ocurrió un error al guardar. Intenta nuevamente más tarde.");
+                return View(model);
+            }
         }
-        return RedirectToAction(nameof(ListaUsuarios));
-    }
+
+        [HttpGet]
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
+        }
+
+        // POST: Confirmar Eliminación
+        [HttpPost, ActionName("Eliminar")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EliminarConfirmado(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario != null)
+            {
+                _context.Usuarios.Remove(usuario);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(ListaUsuarios));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RegistroContacto()
+        {
+            var contactos = await _context.Contactos.ToListAsync();
+            return View(contactos);
+        }
+
     }
 }

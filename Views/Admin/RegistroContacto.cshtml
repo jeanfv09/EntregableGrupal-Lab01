@@ -1,0 +1,29 @@
+@model IEnumerable<Lab01_Grupo1.Models.Contacto>
+
+@{
+    ViewData["Title"] = "Registro de Contacto";
+}
+
+<h2 class="text-center mb-4">📋 Registro de Contacto</h2>
+
+<table class="table table-striped table-bordered table-dark">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Mensaje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contacto in Model)
+        {
+            <tr>
+                <td>@contacto.Id</td>
+                <td>@contacto.Nombre</td>
+                <td>@contacto.Correo</td>
+                <td>@contacto.Mensaje</td>
+            </tr>
+        }
+    </tbody>
+</table>

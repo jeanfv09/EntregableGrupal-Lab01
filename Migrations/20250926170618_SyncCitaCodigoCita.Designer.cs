@@ -3,6 +3,7 @@ using System;
 using Lab01_Grupo1.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab01_Grupal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250926170618_SyncCitaCodigoCita")]
+    partial class SyncCitaCodigoCita
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -84,13 +87,6 @@ namespace Lab01_Grupal.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Correo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("FechaEnviado")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Mensaje")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
