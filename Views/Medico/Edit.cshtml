@@ -23,9 +23,10 @@
 
     <div class="mb-3">
         <label asp-for="Clave" class="form-label"></label>
-        <input asp-for="Clave" type="password" class="form-control" />
+        <input asp-for="Clave" type="password" class="form-control" value="@Model.Clave" />
         <span asp-validation-for="Clave" class="text-danger"></span>
     </div>
+
 
     <div class="mb-3">
         <label asp-for="Correo" class="form-label"></label>
