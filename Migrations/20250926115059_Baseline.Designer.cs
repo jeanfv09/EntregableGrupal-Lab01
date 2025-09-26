@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab01_Grupal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250925092611_AddCodigoCitaToCita")]
-    partial class AddCodigoCitaToCita
+    [Migration("20250926115059_Baseline")]
+    partial class Baseline
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
