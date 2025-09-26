@@ -11,6 +11,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-ENV APP_NET_CORE apptrade.dll 
+ENV APP_NET_CORE Lab01-Grupal.dll
+
 
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet $APP_NET_CORE
