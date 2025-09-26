@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sY0xyAgU3kI=",
+  "dgSpecHash": "w5TnP+8t9RY=",
   "success": true,
-  "projectFilePath": "E:\\ing sistemas\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+  "projectFilePath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\USUARIO\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\USUARIO\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

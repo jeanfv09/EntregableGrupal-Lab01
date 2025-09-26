@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ing sistemas\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
+    "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
   },
   "projects": {
-    "E:\\ing sistemas\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
+    "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ing sistemas\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "projectUniqueName": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
         "projectName": "Lab01-Grupal",
-        "projectPath": "E:\\ing sistemas\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "projectPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
         "packagesPath": "C:\\Users\\USUARIO\\.nuget\\packages\\",
-        "outputPath": "E:\\ing sistemas\\Sandro\\EntregableGrupal-Lab01\\obj\\",
+        "outputPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\USUARIO\\AppData\\Roaming\\NuGet\\NuGet.Config"
