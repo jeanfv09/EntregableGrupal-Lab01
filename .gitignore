@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ignore build output folders
 bin/
 obj/
@@ -39,3 +40,7 @@ appsettings.*.json
 *.build.json
 *.build.endpoints.json
 *.RazorAssemblyInfo.cs
+=======
+bin/
+obj/
+>>>>>>> f948690 (Ignorando bin y obj en Git)
