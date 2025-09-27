@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab01_Grupo1.Models;
+using System;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace Lab01_Grupo1.Controllers
 {
