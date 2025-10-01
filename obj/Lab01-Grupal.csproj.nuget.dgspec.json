@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
+    "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
   },
   "projects": {
-    "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
+    "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "projectUniqueName": "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
         "projectName": "Lab01-Grupal",
-        "projectPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
-        "packagesPath": "C:\\Users\\USUARIO\\.nuget\\packages\\",
-        "outputPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\obj\\",
+        "projectPath": "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "packagesPath": "C:\\Users\\roans\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\roans\\EntregableGrupal-Lab01\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\USUARIO\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\roans\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

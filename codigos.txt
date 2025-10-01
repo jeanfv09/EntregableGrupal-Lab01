@@ -1,0 +1,13 @@
+
+git clone https://github.com/jeanfv09/EntregableGrupal-Lab01.git
+cd EntregableGrupal-Lab01 
+code . 
+
+
+---------------------
+.net install tool 
+container tools
+docker
+sqlife viewer
+--------------------
+.net 9.0

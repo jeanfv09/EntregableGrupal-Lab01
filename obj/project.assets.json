@@ -3232,19 +3232,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\USUARIO\\.nuget\\packages\\": {}
+    "C:\\Users\\roans\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+      "projectUniqueName": "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
       "projectName": "Lab01-Grupal",
-      "projectPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
-      "packagesPath": "C:\\Users\\USUARIO\\.nuget\\packages\\",
-      "outputPath": "E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\obj\\",
+      "projectPath": "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+      "packagesPath": "C:\\Users\\roans\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\roans\\EntregableGrupal-Lab01\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\USUARIO\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\roans\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -3312,16 +3312,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file E:\\ing sistemas\\Trabajos\\SistemaMedico\\EntregableGrupal-Lab01\\obj\\project.nuget.cache : '<' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 2 | BytePositionInLine: 0."
-    }
-  ]
+  }
 }
