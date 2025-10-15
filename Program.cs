@@ -19,9 +19,8 @@ builder.Services.AddHttpContextAccessor();
 // 🔹 Cache para que funcionen las sesiones
 builder.Services.AddDistributedMemoryCache();
 
-// Para la implementacion del API paypal
-builder.Services.Configure<PayPalOptions>(
-builder.Configuration.GetSection(PayPalOptions.PayPal));
+// Para la implementacion del API paypal CON BRAINTREE
+builder.Services.AddScoped<BraintreeService>();
 
 // 🔹 Configuración de la sesión
 builder.Services.AddSession(options =>
