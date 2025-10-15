@@ -163,22 +163,12 @@ public async Task<IActionResult> AgendarCita(CitaViewModel model)
         return View("Citas", model);
     }
 
-    var cita = new Cita
+    return RedirectToAction("ProcesarPago", "Pago", new 
     {
-        IdPaciente = 1, // ⚠️ aquí luego deberías usar el usuario logueado
-        IdMedico = model.IdMedico,
-        Especialidad = _context.Medicos.First(m => m.IdMedico == model.IdMedico).Especialidad,
-        FechaHora = model.FechaHora,
-        MotivoConsulta = model.MotivoConsulta,
-        Estado = "pendiente",
-        CodigoCita = Guid.NewGuid().ToString().Substring(0, 8)
-    };
-
-    _context.Citas.Add(cita);
-    await _context.SaveChangesAsync();
-
-    TempData["Mensaje"] = "Cita agendada correctamente.";
-    return RedirectToAction("Citas");
+        medicoId = model.IdMedico,
+        motivo = model.MotivoConsulta,
+        fechaHora = model.FechaHora
+    });
 }
 
 
