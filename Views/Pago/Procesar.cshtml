@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Procesar Pago";
+}
+
+<h2>Procesar Pago de Cita</h2>
+<div class="row">
+    <div class="col-md-6">
+        <h4>Resumen de Cita</h4>
+        <p><strong>Médico:</strong> Dr. Juan Pérez</p>
+        <p><strong>Especialidad:</strong> Cardiología</p>
+        <p><strong>Fecha:</strong> @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>Precio:</strong> $80.00</p>
+    </div>
+    <div class="col-md-6">
+        <h4>Información de Pago</h4>
+        <!-- Aquí irá el formulario de Stripe -->
+        <div id="stripe-form">
+            <p>Integración de Stripe irá aquí</p>
+            <button class="btn btn-success">Simular Pago Exitoso</button>
+        </div>
+    </div>
+</div>
