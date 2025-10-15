@@ -61,25 +61,6 @@ namespace Lab01_Grupo1.Models
         [Column("metodo_pago")]
         public string? MetodoPago { get; set; }
 
-        // API PAYPAL
-
-        [Column("precio")]
-        public decimal Precio { get; set; } = 80.00m;
-
-        [Column("estado_pago")]
-        public string EstadoPago { get; set; } = "pendiente";
-
-        [Column("fecha_pago")]
-        public DateTime? FechaPago { get; set; }
-
-        [Column("transaction_id")]
-        public string? TransactionId { get; set; }
-
-        [Column("metodo_pago")]
-        public string? MetodoPago { get; set; }
-
-
-
         // 🔗 Relaciones
         [ForeignKey("IdPaciente")]
         public Usuario Paciente { get; set; } = null!;
