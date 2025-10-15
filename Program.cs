@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http; // 👈 necesario para IHttpContextAccessor
 using StackExchange.Redis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
+using Lab01_Grupo1.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,10 @@ builder.Services.AddHttpContextAccessor();
 
 // 🔹 Cache para que funcionen las sesiones
 builder.Services.AddDistributedMemoryCache();
+
+// Para la implementacion del API paypal
+builder.Services.Configure<PayPalOptions>(
+builder.Configuration.GetSection(PayPalOptions.PayPal));
 
 // 🔹 Configuración de la sesión
 builder.Services.AddSession(options =>
