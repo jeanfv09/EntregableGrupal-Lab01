@@ -9,9 +9,9 @@ namespace Lab01_Grupo1.Controllers
     public class PagoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly BraintreeService _braintreeService;
+        private readonly Lab01_Grupo1.Services.BraintreeService _braintreeService; 
 
-        public PagoController(ApplicationDbContext context, BraintreeService braintreeService)
+        public PagoController(ApplicationDbContext context, Lab01_Grupo1.Services.BraintreeService braintreeService)
         {
             _context = context;
             _braintreeService = braintreeService;

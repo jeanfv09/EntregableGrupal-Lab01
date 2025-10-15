@@ -5,6 +5,7 @@ using StackExchange.Redis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
 using Lab01_Grupo1.Configuration;
+using Lab01_Grupo1.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
