@@ -1,22 +1,55 @@
+@* Views/Pago/ProcesarPago.cshtml *@
+@model Lab01_Grupo1.Models.CitaPagoViewModel
+
 @{
     ViewData["Title"] = "Procesar Pago";
 }
 
-<h2>Procesar Pago de Cita</h2>
 <div class="row">
     <div class="col-md-6">
-        <h4>Resumen de Cita</h4>
-        <p><strong>Médico:</strong> Dr. Juan Pérez</p>
-        <p><strong>Especialidad:</strong> Cardiología</p>
-        <p><strong>Fecha:</strong> @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</p>
-        <p><strong>Precio:</strong> $80.00</p>
-    </div>
-    <div class="col-md-6">
-        <h4>Información de Pago</h4>
-        <!-- Aquí irá el formulario de Stripe -->
-        <div id="stripe-form">
-            <p>Integración de Stripe irá aquí</p>
-            <button class="btn btn-success">Simular Pago Exitoso</button>
+        <h3>Resumen de tu Cita</h3>
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Médico:</strong> @Model.MedicoNombre</p>
+                <p><strong>Especialidad:</strong> @Model.Especialidad</p>
+                <p><strong>Fecha:</strong> @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><strong>Motivo:</strong> @Model.MotivoConsulta</p>
+                <hr>
+                <h4>Total a pagar: $@Model.Precio</h4>
+            </div>
         </div>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Información de Pago</h3>
+        <form asp-action="ConfirmarPago" method="post">
+            <input type="hidden" asp-for="MedicoId" />
+            <input type="hidden" asp-for="MedicoNombre" />
+            <input type="hidden" asp-for="Especialidad" />
+            <input type="hidden" asp-for="MotivoConsulta" />
+            <input type="hidden" asp-for="FechaHora" />
+            <input type="hidden" asp-for="Precio" />
+
+            <div class="form-group">
+                <label>Número de Tarjeta</label>
+                <input type="text" class="form-control" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242" readonly>
+                <small class="text-muted">Usa 4242 4242 4242 4242 para prueba</small>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Fecha Expiración</label>
+                    <input type="text" class="form-control" placeholder="12/25" value="12/25" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label>CVV</label>
+                    <input type="text" class="form-control" placeholder="123" value="123" readonly>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg w-100 mt-3">
+                💳 Pagar $@Model.Precio y Confirmar Cita
+            </button>
+        </form>
     </div>
 </div>
