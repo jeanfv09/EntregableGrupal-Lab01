@@ -1,6 +1,4 @@
-@* Views/Pago/ProcesarPago.cshtml *@
 @model Lab01_Grupo1.Models.CitaPagoViewModel
-
 @{
     ViewData["Title"] = "Procesar Pago";
 }
@@ -22,34 +20,62 @@
 
     <div class="col-md-6">
         <h3>Información de Pago</h3>
-        <form asp-action="ConfirmarPago" method="post">
+        
+        <form id="payment-form" method="post" asp-action="ProcesarPago">
             <input type="hidden" asp-for="MedicoId" />
             <input type="hidden" asp-for="MedicoNombre" />
             <input type="hidden" asp-for="Especialidad" />
             <input type="hidden" asp-for="MotivoConsulta" />
             <input type="hidden" asp-for="FechaHora" />
             <input type="hidden" asp-for="Precio" />
-
-            <div class="form-group">
-                <label>Número de Tarjeta</label>
-                <input type="text" class="form-control" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242" readonly>
-                <small class="text-muted">Usa 4242 4242 4242 4242 para prueba</small>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <label>Fecha Expiración</label>
-                    <input type="text" class="form-control" placeholder="12/25" value="12/25" readonly>
-                </div>
-                <div class="col-md-6">
-                    <label>CVV</label>
-                    <input type="text" class="form-control" placeholder="123" value="123" readonly>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-success btn-lg w-100 mt-3">
+            
+            <!-- Braintree Drop-in UI -->
+            <div id="bt-dropin"></div>
+            <input type="hidden" id="nonce" name="paymentMethodNonce" />
+            
+            <button type="submit" class="btn btn-success btn-lg w-100 mt-3" id="submit-button">
                 💳 Pagar $@Model.Precio y Confirmar Cita
             </button>
         </form>
+
+        <div class="text-center mt-3">
+            <small class="text-muted">Pago seguro mediante Braintree</small>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://js.braintreegateway.com/web/dropin/1.33.4/js/dropin.min.js"></script>
+    <script>
+        var form = document.querySelector('#payment-form');
+        var client_token = '@ViewBag.ClientToken';
+
+        braintree.dropin.create({
+            authorization: client_token,
+            container: '#bt-dropin',
+            paypal: {
+                flow: 'vault'
+            }
+        }, function (createErr, instance) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                document.getElementById('submit-button').disabled = true;
+                document.getElementById('submit-button').textContent = 'Procesando pago...';
+
+                instance.requestPaymentMethod(function (err, payload) {
+                    if (err) {
+                        console.log('Error', err);
+                        document.getElementById('submit-button').disabled = false;
+                        document.getElementById('submit-button').textContent = 'Pagar $@Model.Precio y Confirmar Cita';
+                        return;
+                    }
+
+                    // Add the nonce to the form and submit
+                    document.getElementById('nonce').value = payload.nonce;
+                    form.submit();
+                });
+            });
+        });
+    </script>
+}
