@@ -1,0 +1,23 @@
+@model Lab01_Grupo1.Models.Cita
+@{
+    ViewData["Title"] = "Pago Exitoso";
+}
+
+<div class="text-center">
+    <h1 class="text-success">✅ Pago Exitoso</h1>
+    <h3>Tu cita ha sido confirmada</h3>
+    
+    <div class="card mt-4">
+        <div class="card-body">
+            <p><strong>Código de cita:</strong> @Model.CodigoCita</p>
+            <p><strong>Médico:</strong> @Model.Medico?.Usuario?.Nombre</p>
+            <p><strong>Especialidad:</strong> @Model.Especialidad</p>
+            <p><strong>Fecha:</strong> @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Motivo:</strong> @Model.MotivoConsulta</p>
+            <p><strong>Precio pagado:</strong> $@Model.Precio</p>
+            <p><strong>Estado:</strong> <span class="badge bg-success">@Model.EstadoPago</span></p>
+        </div>
+    </div>
+    
+    <a href="/Usuarios/Citas" class="btn btn-primary mt-3">Volver a mis citas</a>
+</div>
