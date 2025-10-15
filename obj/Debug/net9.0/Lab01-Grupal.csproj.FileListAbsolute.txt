@@ -1029,3 +1029,6 @@ C:\Users\Sandro\EntregableGrupal-Lab01\obj\Debug\net9.0\refint\Lab01-Grupal.dll
 C:\Users\Sandro\EntregableGrupal-Lab01\obj\Debug\net9.0\Lab01-Grupal.pdb
 C:\Users\Sandro\EntregableGrupal-Lab01\obj\Debug\net9.0\Lab01-Grupal.genruntimeconfig.cache
 C:\Users\Sandro\EntregableGrupal-Lab01\obj\Debug\net9.0\ref\Lab01-Grupal.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Braintree.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\System.Xml.XPath.XmlDocument.dll
