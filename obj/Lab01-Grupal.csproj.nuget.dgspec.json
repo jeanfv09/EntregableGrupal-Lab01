@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
+    "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
+    "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "projectUniqueName": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
         "projectName": "Lab01-Grupal",
-        "projectPath": "C:\\Users\\roans\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
-        "packagesPath": "C:\\Users\\roans\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\roans\\EntregableGrupal-Lab01\\obj\\",
+        "projectPath": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "packagesPath": "C:\\Users\\Sandro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\roans\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Sandro\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
