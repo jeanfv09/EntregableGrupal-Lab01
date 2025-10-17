@@ -62,63 +62,72 @@ public AdminController(
 
         [HttpGet]
         public async Task<IActionResult> ListaUsuarios()
-{
-    var cacheKey = "admin:usuarios:lista";
-
-    try
-    {
-        // Intentar obtener desde cache
-        var cached = await _cache.GetStringAsync(cacheKey);
-        if (!string.IsNullOrEmpty(cached))
         {
-            _logger.LogInformation("Cache hit ListaUsuarios");
-            var cachedList = JsonSerializer.Deserialize<List<Usuario>>(cached, _jsonOptions)
-                             ?? new List<Usuario>();
-            return View(cachedList);
+            var cacheKey = "admin:usuarios:lista";
+
+            try
+            {
+                // Intentar obtener desde cache
+                var cached = await _cache.GetStringAsync(cacheKey);
+                if (!string.IsNullOrEmpty(cached))
+                {
+                    _logger.LogInformation("Cache hit ListaUsuarios");
+                    var cachedList = JsonSerializer.Deserialize<List<Usuario>>(cached, _jsonOptions)
+                                     ?? new List<Usuario>();
+                    return View(cachedList);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error leyendo cache en ListaUsuarios; proceder a DB");
+            }
+
+            // Cache miss -> consultar DB con proyección explícita para evitar entidades tracked/proxies
+            var usuarios = await _context.Set<Usuario>()
+                .Where(u => u.Rol == "usuario")
+                .Select(u => new Usuario
+                {
+                    IdUsuario = u.IdUsuario,
+                    UsuarioNombre = u.UsuarioNombre,
+                    Nombre = u.Nombre,
+                    Correo = u.Correo,
+                    Rol = u.Rol
+                    // No incluyas Clave por seguridad
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            // Guardar en cache (JSON)
+            try
+            {
+                var serialized = JsonSerializer.Serialize(usuarios, _jsonOptions);
+                var options = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = _cacheTtl
+                };
+                await _cache.SetStringAsync(cacheKey, serialized, options);
+                _logger.LogInformation("ListaUsuarios guardada en cache");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error guardando cache en ListaUsuarios");
+            }
+
+            return View(usuarios);
         }
-    }
-    catch (Exception ex)
-    {
-        _logger.LogWarning(ex, "Error leyendo cache en ListaUsuarios; proceder a DB");
-    }
 
-    // Cache miss -> consultar DB con proyección explícita para evitar entidades tracked/proxies
-    var usuarios = await _context.Set<Usuario>()
-        .Where(u => u.Rol == "usuario")
-        .Select(u => new Usuario
+    // ✅ Registro de Contactos
+        [HttpGet]
+        public async Task<IActionResult> RegistroContacto()
         {
-            IdUsuario = u.IdUsuario,
-            UsuarioNombre = u.UsuarioNombre,
-            Nombre = u.Nombre,
-            Correo = u.Correo,
-            Rol = u.Rol
-            // No incluyas Clave por seguridad
-        })
-        .AsNoTracking()
-        .ToListAsync();
-
-    // Guardar en cache (JSON)
-    try
-    {
-        var serialized = JsonSerializer.Serialize(usuarios, _jsonOptions);
-        var options = new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = _cacheTtl
-        };
-        await _cache.SetStringAsync(cacheKey, serialized, options);
-        _logger.LogInformation("ListaUsuarios guardada en cache");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogWarning(ex, "Error guardando cache en ListaUsuarios");
-    }
-
-    return View(usuarios);
-}
-
+            var contactos = await _context.Contactos
+                .OrderByDescending(c => c.FechaEnviado)
+                .ToListAsync();
+            return View(contactos);
+        }
 
         // GET: Editar Usuario
-    [HttpGet]
+        [HttpGet]
     public async Task<IActionResult> Editar(int id)
     {
         var usuario = await _context.Usuarios.FindAsync(id);

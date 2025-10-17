@@ -13,5 +13,6 @@ namespace Lab01_Grupo1.Models
 
         [Required(ErrorMessage = "El mensaje es obligatorio")]
         public string Mensaje { get; set; } = string.Empty;
+        
     }
 }
