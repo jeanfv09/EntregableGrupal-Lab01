@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Lab01_Grupo1.Models;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 public class UsuariosController : Controller
 {
@@ -13,46 +14,42 @@ public class UsuariosController : Controller
         _context = context;
     }
 
-
     [HttpGet]
     public IActionResult Login()
     {
         return View();
     }
 
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Login(string correo, string contrasena)
-{
-    var usuario = await _context.Usuarios
-        .FirstOrDefaultAsync(u =>
-            (u.Correo == correo || u.UsuarioNombre == correo) &&
-            u.Clave == contrasena);
-
-    if (usuario != null)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(string correo, string contrasena)
     {
-        // ✅ Guarda el nombre en sesión
-        HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre ?? usuario.UsuarioNombre ?? "Usuario");
+        var usuario = await _context.Usuarios
+            .FirstOrDefaultAsync(u =>
+                (u.Correo == correo || u.UsuarioNombre == correo) &&
+                u.Clave == contrasena);
 
-        // ✅ Guarda también el rol en sesión
-        HttpContext.Session.SetString("UsuarioRol", usuario.Rol ?? "usuario");
-
-        TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
-
-        switch (usuario.Rol?.ToLower())
+        if (usuario != null)
         {
-            case "administrador":
-            case "medico":
-                return RedirectToAction("Index", "Admin");
-            default:
-                return RedirectToAction("Index", "Usuarios");
+            // ✅ Guarda el nombre y rol en sesión
+            HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre ?? usuario.UsuarioNombre ?? "Usuario");
+            HttpContext.Session.SetString("UsuarioRol", usuario.Rol ?? "usuario");
+
+            TempData["Bienvenida"] = $"Bienvenido, {usuario.Nombre}";
+
+            switch (usuario.Rol?.ToLower())
+            {
+                case "administrador":
+                case "medico":
+                    return RedirectToAction("Index", "Admin");
+                default:
+                    return RedirectToAction("Index", "Usuarios");
+            }
         }
+
+        ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
+        return View();
     }
-
-    ViewBag.Error = "Credenciales incorrectas. Intenta nuevamente.";
-    return View();
-}
-
 
     [HttpGet]
     public IActionResult Medicos()
@@ -65,29 +62,30 @@ public async Task<IActionResult> Login(string correo, string contrasena)
     {
         return View(new Usuario());
     }
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Register(Usuario usuario)
-{
-    if (ModelState.IsValid)
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(Usuario usuario)
     {
-        _context.Usuarios.Add(usuario);
-        await _context.SaveChangesAsync();
+        if (ModelState.IsValid)
+        {
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
 
-        // ✅ Guarda el nombre en sesión al registrarse
-        HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre ?? usuario.UsuarioNombre ?? "Usuario");
+            // ✅ Guarda el nombre en sesión al registrarse
+            HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre ?? usuario.UsuarioNombre ?? "Usuario");
 
-        return RedirectToAction("Index", "Usuarios");
+            return RedirectToAction("Index", "Usuarios");
+        }
+
+        return View(usuario);
     }
 
-    return View(usuario);
-}
-
-public IActionResult Logout()
-{
-    HttpContext.Session.Clear();
-    return RedirectToAction("Index", "Home");
-}
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Index", "Home");
+    }
 
     public async Task<IActionResult> Index()
     {
@@ -117,62 +115,61 @@ public IActionResult Logout()
     {
         return View();
     }
-[HttpGet]
-public async Task<IActionResult> Citas(string? nombre, string? especialidad)
-{
-    var query = _context.Medicos
-        .Include(m => m.Usuario)
-        .Include(m => m.Perfil)
-        .Include(m => m.Telefonos)
-        .AsQueryable();
 
-    if (!string.IsNullOrWhiteSpace(nombre))
-        query = query.Where(m => m.Usuario.Nombre.Contains(nombre));
-
-    if (!string.IsNullOrWhiteSpace(especialidad))
-        query = query.Where(m => m.Especialidad == especialidad);
-
-    var medicos = await query.ToListAsync();
-
-    ViewBag.Especialidades = await _context.Medicos
-        .Select(m => m.Especialidad)
-        .Distinct()
-        .ToListAsync();
-
-    ViewData["NombreFiltro"] = nombre;
-    ViewData["EspecialidadFiltro"] = especialidad;
-
-    // 🔹 Aquí devolvemos un CitaViewModel, no la lista sola
-    var model = new CitaViewModel
+    [HttpGet]
+    public async Task<IActionResult> Citas(string? nombre, string? especialidad)
     {
-        Medicos = medicos
-    };
-
-    return View(model);
-}
-
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> AgendarCita(CitaViewModel model)
-{
-    if (!ModelState.IsValid)
-    {
-        model.Medicos = await _context.Medicos
+        var query = _context.Medicos
             .Include(m => m.Usuario)
+            .Include(m => m.Perfil)
+            .Include(m => m.Telefonos)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(nombre))
+            query = query.Where(m => m.Usuario.Nombre.Contains(nombre));
+
+        if (!string.IsNullOrWhiteSpace(especialidad))
+            query = query.Where(m => m.Especialidad == especialidad);
+
+        var medicos = await query.ToListAsync();
+
+        ViewBag.Especialidades = await _context.Medicos
+            .Select(m => m.Especialidad)
+            .Distinct()
             .ToListAsync();
-        return View("Citas", model);
+
+        ViewData["NombreFiltro"] = nombre;
+        ViewData["EspecialidadFiltro"] = especialidad;
+
+        var model = new CitaViewModel
+        {
+            Medicos = medicos
+        };
+
+        return View(model);
     }
 
-    return RedirectToAction("ProcesarPago", "Pago", new 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AgendarCita(CitaViewModel model)
     {
-        medicoId = model.IdMedico,
-        motivo = model.MotivoConsulta,
-        fechaHora = model.FechaHora
-    });
-}
+        if (!ModelState.IsValid)
+        {
+            model.Medicos = await _context.Medicos
+                .Include(m => m.Usuario)
+                .ToListAsync();
+            return View("Citas", model);
+        }
 
+        return RedirectToAction("ProcesarPago", "Pago", new
+        {
+            medicoId = model.IdMedico,
+            motivo = model.MotivoConsulta,
+            fechaHora = model.FechaHora
+        });
+    }
 
-
+    // ✅ CONTACTO (registro en BD)
     [HttpGet]
     public IActionResult Contacto()
     {
@@ -180,16 +177,28 @@ public async Task<IActionResult> AgendarCita(CitaViewModel model)
     }
 
     [HttpPost]
-    public IActionResult Contacto(ContactoViewModel model)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Contacto(ContactoViewModel model)
     {
         if (ModelState.IsValid)
         {
+            var contacto = new Contacto
+            {
+                Nombre = model.Nombre,
+                Correo = model.Correo,
+                Mensaje = model.Mensaje,
+                FechaEnviado = DateTime.Now
+            };
+
+            _context.Contactos.Add(contacto);
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Gracias");
         }
 
         return View(model);
     }
-    
+
     [HttpGet]
     public IActionResult Gracias()
     {
@@ -202,7 +211,7 @@ public async Task<IActionResult> AgendarCita(CitaViewModel model)
     {
         if (ModelState.IsValid)
         {
-            usuario.Rol = "medico"; 
+            usuario.Rol = "medico";
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
@@ -218,5 +227,5 @@ public async Task<IActionResult> AgendarCita(CitaViewModel model)
         }
         return View(usuario);
     }
-
 }
+

@@ -8,6 +8,8 @@ namespace Lab01_Grupo1.Models
     public string Nombre { get; set; } = string.Empty;
     public string Correo { get; set; } = string.Empty;
     public string Telefono { get; set; } = string.Empty;
+    public string Mensaje { get; set; } = string.Empty;
+    public DateTime FechaEnviado { get; set; } = DateTime.Now;
 }
 
 
