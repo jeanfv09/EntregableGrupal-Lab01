@@ -1,11 +1,12 @@
 using Lab01_Grupo1.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http; // 👈 necesario para IHttpContextAccessor
+using Microsoft.AspNetCore.Http;
 using StackExchange.Redis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
 using Lab01_Grupo1.Configuration;
 using Lab01_Grupo1.Services;
+using Braintree; // AGREGADO: Necesario para IBraintreeGateway y Environment
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,8 +21,34 @@ builder.Services.AddHttpContextAccessor();
 // 🔹 Cache para que funcionen las sesiones
 builder.Services.AddDistributedMemoryCache();
 
+
+// =========================================================
+// 💳 CONFIGURACIÓN DEL CLIENTE BRAINTREE
+// =========================================================
+// Registra IBraintreeGateway como Singleton (se crea una vez)
+builder.Services.AddSingleton<IBraintreeGateway>(provider =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+    
+    // CORRECCIÓN CS0104: Usamos Braintree.Environment para evitar la ambigüedad con System.Environment
+    Braintree.Environment environment = config["Braintree:Environment"]?.ToLower() == "production" 
+        ? Braintree.Environment.PRODUCTION 
+        : Braintree.Environment.SANDBOX; 
+
+    return new BraintreeGateway
+    {
+        // CORRECCIÓN CS0104: Usamos Braintree.Environment.SANDBOX/PRODUCTION
+        Environment = environment, 
+        MerchantId = config["Braintree:MerchantId"],
+        PublicKey = config["Braintree:PublicKey"],
+        PrivateKey = config["Braintree:PrivateKey"]
+    };
+});
+
 // Para la implementacion del API paypal CON BRAINTREE
-builder.Services.AddScoped<BraintreeService>();
+// CORRECCIÓN CS0104: Usamos el namespace completo para nuestro servicio
+builder.Services.AddScoped<Lab01_Grupo1.Services.BraintreeService>(); 
+// =========================================================
 
 // 🔹 Configuración de la sesión
 builder.Services.AddSession(options =>
@@ -30,23 +57,15 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 // 1) Configuración servicios (DbContext, Identity si aplica, Cache, Session, Redis)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddHttpContextAccessor();
 
-// Session + distributed cache (default to memory; try replace with Redis below)
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+
+
 
 // Redis - IMPORTANT: register BEFORE builder.Build()
 var redisHost = builder.Configuration["Redis:Host"];

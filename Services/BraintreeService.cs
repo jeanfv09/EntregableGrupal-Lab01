@@ -1,29 +1,28 @@
 using Braintree;
+using System.Threading.Tasks;
 
 namespace Lab01_Grupo1.Services
 {
+    // Nota: IConfiguration ya no es necesario aquí, ya que el IBraintreeGateway
+    // está completamente configurado en Program.cs.
     public class BraintreeService
     {
         private readonly IBraintreeGateway _gateway;
 
-        public BraintreeService(IConfiguration config)
+        // Constructor CORREGIDO: Recibe la instancia IBraintreeGateway ya configurada
+        public BraintreeService(IBraintreeGateway gateway) 
         {
-            _gateway = new BraintreeGateway
-            {
-                Environment = Braintree.Environment.SANDBOX,
-                MerchantId = config["Braintree:MerchantId"],
-                PublicKey = config["Braintree:PublicKey"],
-                PrivateKey = config["Braintree:PrivateKey"]
-            };
+            _gateway = gateway;
         }
 
-        public IBraintreeGateway GetGateway()
-        {
-            return _gateway;
-        }
+        // El método GetGateway() se ha eliminado ya que no es una práctica común
+        // exponer el gateway a otros servicios; la lógica de pago debería estar aquí.
+        // Si necesitas el gateway en un controlador, inyecta BraintreeService.
 
         public string GenerateClientToken()
         {
+            // Este método genera un token para el cliente, que luego usará
+            // para enviar el 'nonce' al servidor.
             return _gateway.ClientToken.Generate();
         }
 
@@ -36,10 +35,12 @@ namespace Lab01_Grupo1.Services
                 OrderId = orderId,
                 Options = new TransactionOptionsRequest
                 {
-                    SubmitForSettlement = true
+                    // Indica que se envíe inmediatamente para liquidación (cargo final)
+                    SubmitForSettlement = true 
                 }
             };
 
+            // Se usa SaleAsync para procesar la transacción de venta.
             return await _gateway.Transaction.SaleAsync(request);
         }
     }
