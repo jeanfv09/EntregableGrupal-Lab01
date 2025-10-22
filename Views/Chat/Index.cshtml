@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "Asistente Virtual Médico";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h4>💬 Asistente Virtual Médico</h4>
+            <p class="mb-0">Consulta sobre citas médicas, especialidades y pagos</p>
+        </div>
+
+        <div class="card-body">
+            <div id="chatBox" class="border rounded p-3 mb-3 bg-light" style="height: 400px; overflow-y: auto;">
+                <!-- Aquí se mostrarán los mensajes -->
+            </div>
+
+            <form id="chatForm" class="d-flex">
+                <input type="text" id="userInput" class="form-control me-2" placeholder="Escribe tu pregunta aquí..." required />
+                <button type="submit" class="btn btn-success">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const chatBox = document.getElementById("chatBox");
+        const chatForm = document.getElementById("chatForm");
+        const userInput = document.getElementById("userInput");
+
+        // 🆔 Identificador único por sesión (para guardar historial en DB)
+        const sessionId = localStorage.getItem("chatSessionId") || crypto.randomUUID();
+        localStorage.setItem("chatSessionId", sessionId);
+
+        // 🧠 Función para agregar mensajes al chat
+        function addMessage(sender, message) {
+            const msgDiv = document.createElement("div");
+            msgDiv.classList.add("mb-2");
+
+            if (sender === "user") {
+                msgDiv.innerHTML = `<div class="text-end">
+                    <span class="badge bg-primary text-wrap p-2">${message}</span>
+                </div>`;
+            } else {
+                msgDiv.innerHTML = `<div class="text-start">
+                    <span class="badge bg-secondary text-wrap p-2">${message}</span>
+                </div>`;
+            }
+
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 🚀 Evento al enviar mensaje
+        chatForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Mostrar mensaje del usuario
+            addMessage("user", message);
+            userInput.value = "";
+
+            try {
+                // Enviar al backend
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userMessage: message, sessionId: sessionId })
+                });
+
+                const data = await response.text();
+                addMessage("bot", data);
+            } catch (error) {
+                addMessage("bot", "⚠️ Error al conectar con el asistente. Intenta de nuevo.");
+                console.error(error);
+            }
+        });
+
+        // 🔁 Cargar mensajes anteriores
+        window.addEventListener("load", async () => {
+            const response = await fetch(`/api/chat/${sessionId}`);
+            const messages = await response.json();
+
+            messages.forEach(m => addMessage(m.sender.toLowerCase(), m.message));
+        });
+    </script>
+}
+

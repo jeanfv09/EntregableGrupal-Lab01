@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Lab01_Grupo1.Configuration;
 using Lab01_Grupo1.Services;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -23,6 +22,10 @@ builder.Services.AddDistributedMemoryCache();
 // Para la implementacion del API paypal CON BRAINTREE
 builder.Services.AddScoped<BraintreeService>();
 
+// 🧠 Agregamos el servicio del Chatbot con OpenAI (SemanticKernelService)
+builder.Services.AddSingleton<SemanticKernelService>();
+builder.Services.AddScoped<ChatService>();
+
 // 🔹 Configuración de la sesión
 builder.Services.AddSession(options =>
 {
@@ -30,6 +33,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 // 1) Configuración servicios (DbContext, Identity si aplica, Cache, Session, Redis)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -77,7 +81,9 @@ catch
 {
     // keep memory cache already registered as fallback
 }
+
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -105,3 +111,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+

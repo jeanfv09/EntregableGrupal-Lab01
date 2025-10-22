@@ -40,6 +40,7 @@
         flex-direction: column;
         justify-content: center;
         backdrop-filter: blur(4px);
+        text-decoration: none;
     }
 
     .btn-custom:hover {
@@ -48,6 +49,18 @@
         color: #fff;
         transform: translateY(-5px) scale(1.05);
         box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+    }
+
+    /* Estilo especial para el botón del chatbot */
+    .btn-chatbot {
+        background: rgba(0, 123, 255, 0.25);
+        border-color: #00b4d8;
+    }
+
+    .btn-chatbot:hover {
+        background: #00b4d8;
+        border-color: #00b4d8;
+        box-shadow: 0 6px 20px rgba(0, 180, 216, 0.5);
     }
 
     .btn-custom span {
@@ -63,15 +76,16 @@
     <div class="row g-4 w-100">
 
         <div class="col-6 col-md-3">
-            <a asp-controller="Usuarios" asp-action="Chatbot" class="btn btn-custom w-100">
+            <a asp-controller="Chat" asp-action="Index" class="btn btn-custom btn-chatbot w-100">
                 <span>🤖</span> Chatbot Médico
             </a>
         </div>
+
         <div class="col-6 col-md-3">
-    <a asp-controller="Usuarios" asp-action="Citas" class="btn btn-custom w-100">
-        <span>📅</span> Agendar Cita 
-    </a>
-</div>
+            <a asp-controller="Usuarios" asp-action="Citas" class="btn btn-custom w-100">
+                <span>📅</span> Agendar Cita 
+            </a>
+        </div>
 
         <div class="col-6 col-md-3">
             <a asp-controller="Usuarios" asp-action="FormularioSalud" class="btn btn-custom w-100">
@@ -84,5 +98,6 @@
                 <span>📧</span> Contacto
             </a>
         </div>
+
     </div>
 </div>
