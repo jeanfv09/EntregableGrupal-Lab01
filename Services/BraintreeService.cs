@@ -2,28 +2,24 @@ using Braintree;
 
 namespace Lab01_Grupo1.Services
 {
+    // Nota: IConfiguration ya no es necesario aquí, ya que el IBraintreeGateway
+    // está completamente configurado en Program.cs.
     public class BraintreeService
     {
+
         private readonly IBraintreeGateway _gateway;
 
-        public BraintreeService(IConfiguration config)
-        {
-            _gateway = new BraintreeGateway
-            {
-                Environment = Braintree.Environment.SANDBOX,
-                MerchantId = config["Braintree:MerchantId"],
-                PublicKey = config["Braintree:PublicKey"],
-                PrivateKey = config["Braintree:PrivateKey"]
-            };
-        }
+        // Constructor CORREGIDO: Recibe la instancia IBraintreeGateway ya configurada
 
-        public IBraintreeGateway GetGateway()
+        public BraintreeService(IBraintreeGateway gateway)
         {
-            return _gateway;
+            _gateway = gateway;
         }
 
         public string GenerateClientToken()
         {
+            // Este método genera un token para el cliente, que luego usará
+            // para enviar el 'nonce' al servidor.
             return _gateway.ClientToken.Generate();
         }
 

@@ -1,11 +1,12 @@
 using Lab01_Grupo1.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http; // 👈 necesario para IHttpContextAccessor
+using Microsoft.AspNetCore.Http; 
 using StackExchange.Redis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
 using Lab01_Grupo1.Configuration;
 using Lab01_Grupo1.Services;
+using Braintree;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,34 @@ builder.Services.AddHttpContextAccessor();
 // 🔹 Cache para que funcionen las sesiones
 builder.Services.AddDistributedMemoryCache();
 
-// Para la implementacion del API paypal CON BRAINTREE
-builder.Services.AddScoped<BraintreeService>();
+// =========================================================
+// 💳 CONFIGURACIÓN DEL CLIENTE BRAINTREE
+// =========================================================
+// Registra IBraintreeGateway como Singleton (se crea una vez)
+builder.Services.AddSingleton<IBraintreeGateway>(provider =>
+{
+    var config = provider.GetRequiredService<IConfiguration>();
+
+    // CORRECCIÓN CS0104: Usamos Braintree.Environment para evitar la ambigüedad con System.Environment
+    Braintree.Environment environment = config["Braintree:Environment"]?.ToLower() == "production"
+    ? Braintree.Environment.PRODUCTION
+    : Braintree.Environment.SANDBOX;
+
+    return new BraintreeGateway
+    {
+        // CORRECCIÓN CS0104: Usamos Braintree.Environment.SANDBOX/PRODUCTION
+        Environment = environment,
+        MerchantId = config["Braintree:MerchantId"],
+        PublicKey = config["Braintree:PublicKey"],
+        PrivateKey = config["Braintree:PrivateKey"],
+        // 🚨 CAMBIO FINAL: Se elimina la propiedad 'PayPalMerchantAccountId' que causó el error CS0117.
+        // La habilitación de PayPal debe manejarse en el lado del cliente (JavaScript) usando el token generado.
+    };
+});
+
+// CORRECCIÓN CS0104: Usamos el namespace completo para nuestro servicio
+builder.Services.AddScoped<Lab01_Grupo1.Services.BraintreeService>(); 
+// =========================================================
 
 // 🧠 Agregamos el servicio del Chatbot con OpenAI (SemanticKernelService)
 builder.Services.AddSingleton<SemanticKernelService>();
@@ -39,18 +66,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddHttpContextAccessor();
-
-// Session + distributed cache (default to memory; try replace with Redis below)
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
 
 // Redis - IMPORTANT: register BEFORE builder.Build()
 var redisHost = builder.Configuration["Redis:Host"];
