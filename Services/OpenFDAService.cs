@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Lab01_Grupal.Services
+namespace Lab01_Grupo1.Services
 {
     public class OpenFDAService
     {
@@ -89,3 +89,4 @@ namespace Lab01_Grupal.Services
         }
     }
 }
+
