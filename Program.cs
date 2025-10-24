@@ -53,6 +53,8 @@ builder.Services.AddScoped<Lab01_Grupo1.Services.BraintreeService>();
 builder.Services.AddSingleton<SemanticKernelService>();
 builder.Services.AddScoped<ChatService>();
 
+builder.Services.AddHttpClient<OpenFDAService>(); //API OPENFDA
+
 // 🔹 Configuración de la sesión
 builder.Services.AddSession(options =>
 {

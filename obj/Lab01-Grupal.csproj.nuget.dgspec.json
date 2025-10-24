@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\Sistema Medico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
+    "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
   },
   "projects": {
-    "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\Sistema Medico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
+    "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\Sistema Medico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "projectUniqueName": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
         "projectName": "Lab01-Grupal",
-        "projectPath": "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\Sistema Medico\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
-        "packagesPath": "C:\\Users\\USUARIO\\.nuget\\packages\\",
-        "outputPath": "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\Sistema Medico\\EntregableGrupal-Lab01\\obj\\",
+        "projectPath": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "packagesPath": "C:\\Users\\Sandro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\USUARIO\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Sandro\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -50,17 +50,25 @@
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[9.0.8, )"
+              "version": "[9.0.10, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.9, )"
+              "version": "[9.0.10, )"
             },
             "Microsoft.Extensions.Caching.StackExchangeRedis": {
               "target": "Package",
               "version": "[9.0.9, )"
+            },
+            "Microsoft.SemanticKernel": {
+              "target": "Package",
+              "version": "[1.66.0, )"
+            },
+            "Microsoft.SemanticKernel.Connectors.OpenAI": {
+              "target": "Package",
+              "version": "[1.66.0, )"
             },
             "StackExchange.Redis": {
               "target": "Package",
@@ -86,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

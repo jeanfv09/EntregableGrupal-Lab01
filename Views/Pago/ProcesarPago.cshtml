@@ -1,0 +1,180 @@
+@model Lab01_Grupo1.Models.CitaPagoViewModel
+@{
+    ViewData["Title"] = "Procesar Pago";
+}
+<!-- Modal de éxito -->
+<div id="successModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999;">
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:30px; border-radius:10px; text-align:center; min-width:300px;">
+        <h3 style="color:green; margin-bottom:15px;">✅ Compra Exitosa</h3>
+        <p>El pago de $@Model.Precio se procesó correctamente</p>
+        <p><strong>Médico:</strong> @Model.MedicoNombre</p>
+        <p><strong>Fecha:</strong> @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</p>
+        <button onclick="redirigirAIndex()" style="background:#28a745; color:white; border:none; padding:8px 20px; border-radius:5px; margin-top:15px; cursor:pointer;">
+            Aceptar
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Resumen de tu Cita</h3>
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Médico:</strong> @Model.MedicoNombre</p>
+                <p><strong>Especialidad:</strong> @Model.Especialidad</p>
+                <p><strong>Fecha:</strong> @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><strong>Motivo:</strong> @Model.MotivoConsulta</p>
+                <hr>
+                <h4>Total a pagar: $@Model.Precio</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Información de Pago</h3>
+        
+        <form id="payment-form" method="post" asp-action="ProcesarPago">
+            <input type="hidden" asp-for="MedicoId" />
+            <input type="hidden" asp-for="MedicoNombre" />
+            <input type="hidden" asp-for="Especialidad" />
+            <input type="hidden" asp-for="MotivoConsulta" />
+            <input type="hidden" asp-for="FechaHora" />
+            <input type="hidden" asp-for="Precio" />
+            
+            <!-- Braintree Drop-in UI -->
+            <div id="bt-dropin"></div>
+            <input type="hidden" id="nonce" name="paymentMethodNonce" />
+            
+            <button type="submit" class="btn btn-success btn-lg w-100 mt-3" id="submit-button">
+                💳 Pagar $@Model.Precio y Confirmar Cita
+
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <small class="text-muted">Pago seguro mediante Braintree</small>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+     <script src="https://js.braintreegateway.com/web/dropin/1.44.0/js/dropin.min.js">
+</script>
+    <script>
+        function redirigirAIndex() {
+            // Redirigir a la página Index de Usuarios
+            window.location.href = '/Usuarios/Index';
+        }
+
+        var form = document.querySelector('#payment-form');
+        var client_token = '@ViewBag.ClientToken';
+
+        // Convertimos el precio del modelo a una variable JS para usarlo en PayPal
+        var paymentAmount = '@Model.Precio';
+
+        braintree.dropin.create({
+            authorization: client_token,
+            container: '#bt-dropin',
+            card: {
+                cardholderName: {
+                    required: true
+                },
+                overrides: {
+                    fields: {
+                        number: {
+                            placeholder: 'Número de tarjeta',
+                            show: true
+                        },
+                        cvv: {
+                            required: true,
+                            show: true,
+                            placeholder: 'CVV'
+                        },
+                        expirationDate: {
+                            placeholder: 'MM/AA',
+                            show: true
+                        }
+                    }
+                }
+            },
+            // 🚨 CORRECCIÓN CLAVE: Cambiamos 'flow' a 'checkout' para forzar el botón de pago
+            // y le pasamos el monto para la transacción.
+            paypal: {
+                flow: 'checkout',
+                amount: paymentAmount,
+                currency: 'USD' // Asume USD, ajusta si usas otra moneda
+            }
+        }, function (createErr, instance) {
+            if (createErr) {
+                console.log('Error', createErr);
+                return;
+            }        
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                document.getElementById('submit-button').disabled = true;
+                document.getElementById('submit-button').textContent = 'Procesando pago...';
+
+                instance.requestPaymentMethod(function (err, payload) {
+                    if (err) {
+                        console.log('Error', err);
+                        document.getElementById('submit-button').disabled = false;
+                        document.getElementById('submit-button').textContent = 'Pagar y Confirmar Cita';
+                        // 🚨 CORRECCIÓN: Usar modal personalizado en lugar de alert()
+                        // Para evitar problemas en el iframe
+                        mostrarError('Error en el pago: ' + err.message);
+                        return;
+                    }
+
+                    // Agregar el nonce al formulario
+                    document.getElementById('nonce').value = payload.nonce;
+                    
+                    // Enviar el pago por AJAX
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form)
+                    })
+                    .then(response => {
+                        // Mostrar el modal de éxito
+                        document.getElementById('successModal').style.display = 'block';
+                        document.getElementById('submit-button').style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('submit-button').disabled = false;
+                        document.getElementById('submit-button').textContent = 'Pagar y Confirmar Cita';
+                        // 🚨 CORRECCIÓN: Usar modal personalizado en lugar de alert()
+                        mostrarError('Error de conexión: ' + error.message);
+                    });
+                });
+            });
+        });
+    </script>
+    <script>
+        // Función de error personalizada (Reemplaza alert())
+        function mostrarError(mensaje) {
+            // Creamos un modal de error simple si no existe
+            let errorModal = document.getElementById('errorModal');
+            if (!errorModal) {
+                errorModal = document.createElement('div');
+                errorModal.id = 'errorModal';
+                errorModal.innerHTML = `
+                    <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000;">
+                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:30px; border-radius:10px; text-align:center; min-width:300px;">
+                            <h3 style="color:red; margin-bottom:15px;">❌ Error de Pago</h3>
+                            <p id="errorMessageContent"></p>
+                            <button onclick="document.getElementById('errorModal').style.display = 'none';" 
+                                    style="background:#dc3545; color:white; border:none; padding:8px 20px; border-radius:5px; margin-top:15px; cursor:pointer;">
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(errorModal);
+            }
+            document.getElementById('errorMessageContent').textContent = mensaje;
+            errorModal.style.display = 'block';
+        }
+    </script>
+}
