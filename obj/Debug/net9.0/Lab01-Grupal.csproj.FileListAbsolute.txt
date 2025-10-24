@@ -1120,3 +1120,19 @@ C:\Users\pc\Documents\Progra 1 trabajos\Lab01-Grupal\bin\Debug\net9.0\ru\Microso
 C:\Users\pc\Documents\Progra 1 trabajos\Lab01-Grupal\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\pc\Documents\Progra 1 trabajos\Lab01-Grupal\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\pc\Documents\Progra 1 trabajos\Lab01-Grupal\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Azure.AI.OpenAI.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Azure.Core.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.Bcl.HashCode.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.Extensions.AI.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.Extensions.AI.Abstractions.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.Extensions.AI.OpenAI.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.Extensions.VectorData.Abstractions.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.SemanticKernel.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.SemanticKernel.Abstractions.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.SemanticKernel.Connectors.AzureOpenAI.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.SemanticKernel.Connectors.OpenAI.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\Microsoft.SemanticKernel.Core.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\OpenAI.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\System.ClientModel.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\System.Memory.Data.dll
+C:\Users\Sandro\EntregableGrupal-Lab01\bin\Debug\net9.0\System.Numerics.Tensors.dll
