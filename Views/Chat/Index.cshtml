@@ -1,0 +1,196 @@
+@{
+    ViewData["Title"] = "Asistente Virtual Médico";
+}
+
+<style>
+    body {
+        background: url('https://static.vecteezy.com/system/resources/previews/006/712/985/non_2x/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg') 
+                    no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+    }
+
+    .chat-container {
+        max-width: 800px;
+        margin: 60px auto;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+    }
+
+    .chat-header {
+        background: rgba(0, 119, 182, 0.8);
+        border-radius: 20px 20px 0 0;
+        text-align: center;
+        padding: 25px 15px;
+    }
+
+    .chat-header h4 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+        color: #fff;
+    }
+
+    .chat-header p {
+        color: #e0e0e0;
+        font-size: 1rem;
+    }
+
+    #chatBox {
+        height: 450px;
+        overflow-y: auto;
+        padding: 25px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0 0 15px 15px;
+        scrollbar-width: thin;
+        scrollbar-color: #0077b6 rgba(255, 255, 255, 0.1);
+    }
+
+    #chatBox::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #chatBox::-webkit-scrollbar-thumb {
+        background-color: #0077b6;
+        border-radius: 10px;
+    }
+
+    .message {
+        margin: 10px 0;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .message.user {
+        justify-content: flex-end;
+    }
+
+    .message.bot {
+        justify-content: flex-start;
+    }
+
+    .bubble {
+        padding: 12px 18px;
+        border-radius: 18px;
+        max-width: 70%;
+        font-size: 1rem;
+        line-height: 1.4;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .user .bubble {
+        background: #0077b6;
+        color: #fff;
+        border-bottom-right-radius: 0;
+    }
+
+    .bot .bubble {
+        background: rgba(255, 255, 255, 0.2);
+        color: #f8f9fa;
+        border-bottom-left-radius: 0;
+    }
+
+    #chatForm {
+        display: flex;
+        gap: 10px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0 0 20px 20px;
+    }
+
+    #userInput {
+        flex: 1;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+    }
+
+    button.btn-send {
+        background: #00b4d8;
+        border: none;
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 10px;
+        transition: 0.3s ease;
+        font-weight: 600;
+    }
+
+    button.btn-send:hover {
+        background: #0077b6;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 119, 182, 0.4);
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h4>💬 Asistente Virtual Médico</h4>
+        <p>Consulta sobre citas médicas, especialidades y pagos</p>
+    </div>
+
+    <div id="chatBox"></div>
+
+    <form id="chatForm">
+        <input type="text" id="userInput" placeholder="Escribe tu pregunta aquí..." required />
+        <button type="submit" class="btn-send">Enviar</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        const chatBox = document.getElementById("chatBox");
+        const chatForm = document.getElementById("chatForm");
+        const userInput = document.getElementById("userInput");
+
+        const sessionId = localStorage.getItem("chatSessionId") || crypto.randomUUID();
+        localStorage.setItem("chatSessionId", sessionId);
+
+        function addMessage(sender, message) {
+            const msgDiv = document.createElement("div");
+            msgDiv.classList.add("message", sender);
+
+            const bubble = document.createElement("div");
+            bubble.classList.add("bubble");
+            bubble.innerText = message;
+
+            msgDiv.appendChild(bubble);
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        chatForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            addMessage("user", message);
+            userInput.value = "";
+
+            try {
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userMessage: message, sessionId: sessionId })
+                });
+
+                const data = await response.text();
+                addMessage("bot", data);
+            } catch (error) {
+                addMessage("bot", "⚠️ Error al conectar con el asistente. Intenta de nuevo.");
+                console.error(error);
+            }
+        });
+
+        window.addEventListener("load", async () => {
+            const response = await fetch(`/api/chat/${sessionId}`);
+            const messages = await response.json();
+            messages.forEach(m => addMessage(m.sender.toLowerCase(), m.message));
+        });
+    </script>
+}
+
