@@ -56,6 +56,13 @@ builder.Services.AddScoped<ChatService>();
 
 builder.Services.AddHttpClient<OpenFDAService>(); //API OPENFDA
 
+builder.Services.AddHttpClient<OpenFDAService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.fda.gov/");
+    client.DefaultRequestHeaders.Add("User-Agent", "Lab01-Grupo1/1.0");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 // 🔹 Configuración de la sesión
 builder.Services.AddSession(options =>
 {

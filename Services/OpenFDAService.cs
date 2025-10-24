@@ -5,7 +5,6 @@ namespace Lab01_Grupo1.Services
     public class OpenFDAService
     {
         private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://api.fda.gov/drug/label.json";
 
         public OpenFDAService(HttpClient httpClient)
         {
@@ -19,20 +18,39 @@ namespace Lab01_Grupo1.Services
                 if (string.IsNullOrWhiteSpace(drugName))
                     return "Por favor ingrese un nombre de medicamento válido.";
 
-                var url = $"{BaseUrl}?search=generic_name:{Uri.EscapeDataString(drugName)}&limit=1";
-                var response = await _httpClient.GetAsync(url);
-                
-                if (response.IsSuccessStatusCode)
+                // 🔄 DIFERENTES ESTRATEGIAS DE BÚSQUEDA
+                var searchQueries = new[]
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    return ParseDrugInfo(json, drugName);
+                    $"openfda.brand_name:{drugName}",
+                    $"openfda.generic_name:{drugName}", 
+                    $"openfda.substance_name:{drugName}",
+                    $"{drugName}"
+                };
+
+                foreach (var searchQuery in searchQueries)
+                {
+                    var url = $"drug/label.json?search={Uri.EscapeDataString(searchQuery)}&limit=1";
+                    var response = await _httpClient.GetAsync(url);
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        
+                        // Verificar si realmente encontró resultados
+                        using var document = JsonDocument.Parse(json);
+                        if (document.RootElement.TryGetProperty("results", out var results) && 
+                            results.GetArrayLength() > 0)
+                        {
+                            return ParseDrugInfo(json, drugName);
+                        }
+                    }
                 }
                 
-                return "No se pudo obtener información del medicamento en este momento.";
+                return $"No se encontró información para: {drugName}. Prueba con el nombre en inglés.";
             }
             catch (Exception ex)
             {
-                return $"Error al consultar la base de datos de medicamentos: {ex.Message}";
+                return $"Error: {ex.Message}";
             }
         }
 
@@ -47,11 +65,17 @@ namespace Lab01_Grupo1.Services
                 {
                     var drug = results[0];
                     
-                    // Extraer información del medicamento
-                    var genericName = drug.TryGetProperty("generic_name", out var genName) 
-                        ? genName.GetString() ?? drugName 
+                    // Intentar diferentes campos de nombre
+                    var brandName = drug.TryGetProperty("openfda", out var openfda) && 
+                                   openfda.TryGetProperty("brand_name", out var brand) 
+                        ? brand.EnumerateArray().FirstOrDefault().GetString() 
+                        : null;
+                        
+                    var genericName = drug.TryGetProperty("openfda", out var openfda2) && 
+                                     openfda2.TryGetProperty("generic_name", out var generic) 
+                        ? generic.EnumerateArray().FirstOrDefault().GetString() 
                         : drugName;
-                    
+
                     var purposes = new List<string>();
                     if (drug.TryGetProperty("purpose", out var purposeArray))
                     {
@@ -59,34 +83,24 @@ namespace Lab01_Grupo1.Services
                             .Select(p => p.GetString())
                             .Where(p => !string.IsNullOrEmpty(p))!);
                     }
-                    
-                    var warnings = new List<string>();
-                    if (drug.TryGetProperty("warnings", out var warningsArray))
-                    {
-                        warnings.AddRange(warningsArray.EnumerateArray()
-                            .Select(w => w.GetString())
-                            .Where(w => !string.IsNullOrEmpty(w))!);
-                    }
 
-                    // Construir respuesta amigable
-                    var info = $"💊 **{genericName}**\n\n";
+                    var displayName = brandName ?? genericName ?? drugName;
+                    var info = $"💊 **{displayName}**\n\n";
                     
                     if (purposes.Any())
-                        info += $"**Usos:** {string.Join(", ", purposes.Take(2))}\n\n";
-                    
-                    if (warnings.Any())
-                        info += $"**Advertencias:** {string.Join(" ", warnings.Take(1))}";
+                        info += $"**Usos:** {string.Join(", ", purposes.Take(2))}";
+                    else
+                        info += "**Usos:** Información disponible en la base de datos FDA";
                     
                     return info;
                 }
                 
-                return $"No se encontró información para el medicamento: {drugName}";
+                return $"No se encontró información para: {drugName}";
             }
             catch (Exception)
             {
-                return $"Se encontró información para {drugName}, pero hubo un error al procesarla.";
+                return $"Información obtenida para {drugName}";
             }
         }
     }
 }
-
