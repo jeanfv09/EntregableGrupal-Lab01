@@ -5815,19 +5815,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sandro\\.nuget\\packages\\": {}
+    "C:\\Users\\pc\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+      "projectUniqueName": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj",
       "projectName": "Lab01-Grupal",
-      "projectPath": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
-      "packagesPath": "C:\\Users\\Sandro\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sandro\\EntregableGrupal-Lab01\\obj\\",
+      "projectPath": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj",
+      "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Sandro\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -5907,7 +5907,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
