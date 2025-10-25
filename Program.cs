@@ -10,6 +10,7 @@ using Braintree;
 // 🔹 Agregar el using para NoticiasMedicas
 using NoticiasMedicas.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -57,6 +58,15 @@ builder.Services.AddScoped<Lab01_Grupo1.Services.BraintreeService>();
 // 🧠 Agregamos el servicio del Chatbot con OpenAI (SemanticKernelService)
 builder.Services.AddSingleton<SemanticKernelService>();
 builder.Services.AddScoped<ChatService>();
+
+builder.Services.AddHttpClient<OpenFDAService>(); //API OPENFDA
+
+builder.Services.AddHttpClient<OpenFDAService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.fda.gov/");
+    client.DefaultRequestHeaders.Add("User-Agent", "Lab01-Grupo1/1.0");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
 
 // 🔹 Configuración de la sesión
 builder.Services.AddSession(options =>
