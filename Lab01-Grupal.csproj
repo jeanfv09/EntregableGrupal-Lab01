@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.66.0" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.66.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.9.24" />
+    <PackageReference Include="System.Net.Http.Json" Version="9.0.10" />
   </ItemGroup>
 
 </Project>

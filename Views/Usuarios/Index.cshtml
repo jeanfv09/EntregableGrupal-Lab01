@@ -51,7 +51,6 @@
         box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
     }
 
-    /* Estilo especial para el botón del chatbot */
     .btn-chatbot {
         background: rgba(0, 123, 255, 0.25);
         border-color: #00b4d8;
@@ -96,6 +95,13 @@
         <div class="col-6 col-md-3">
             <a asp-controller="Usuarios" asp-action="Contacto" class="btn btn-custom w-100">
                 <span>📧</span> Contacto
+            </a>
+        </div>
+
+        <!-- ✅ Nuevo botón agregado -->
+        <div class="col-6 col-md-3">
+            <a asp-controller="Noticias" asp-action="Index" class="btn btn-custom w-100">
+                <span>📰</span> Noticias Médicas
             </a>
         </div>
 

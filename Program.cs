@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Http;
 using StackExchange.Redis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
-using Lab01_Grupo1.Configuration;
 using Lab01_Grupo1.Services;
 using Braintree;
+// 🔹 Agregar el using para NoticiasMedicas
+using NoticiasMedicas.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddHttpContextAccessor();
 
 // 🔹 Cache para que funcionen las sesiones
 builder.Services.AddDistributedMemoryCache();
+
+// 🔹 REGISTRAR EL SERVICIO DE NOTICIAS MÉDICAS (agregar esta línea)
+builder.Services.AddHttpClient<MedicalNewsService>();
 
 // =========================================================
 // 💳 CONFIGURACIÓN DEL CLIENTE BRAINTREE
@@ -35,14 +39,11 @@ builder.Services.AddSingleton<IBraintreeGateway>(provider =>
 
     return new BraintreeGateway
     {
-        // CORRECCIÓN CS0104: Usamos Braintree.Environment.SANDBOX/PRODUCTION
-        Environment = environment,
+        Environment = environment,
         MerchantId = config["Braintree:MerchantId"],
         PublicKey = config["Braintree:PublicKey"],
         PrivateKey = config["Braintree:PrivateKey"],
-        // 🚨 CAMBIO FINAL: Se elimina la propiedad 'PayPalMerchantAccountId' que causó el error CS0117.
-        // La habilitación de PayPal debe manejarse en el lado del cliente (JavaScript) usando el token generado.
-    };
+    };
 });
 
 // CORRECCIÓN CS0104: Usamos el namespace completo para nuestro servicio
@@ -126,4 +127,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
