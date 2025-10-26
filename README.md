@@ -59,7 +59,7 @@ Variables de entorno principales:
 
 ASPNETCORE_ENVIRONMENT=Production
 
-ASPNETCORE_URLS=http://0.0.0.0:${PORT}
+ASPNETCORE_URLS=https://pruebasprogramacion.onrender.com
 
 ConnectionStrings__DefaultConnection
 
@@ -67,9 +67,8 @@ Redis__ConnectionString
 
 Cuenta del Administrador (por defecto):
 
-Email: admin@hospital.local
-
-Password: Admin123!
+Email: elliot@ecorp.com
+Password: elliot@ecorp.com
 
 🐳 Dockerfile
 
