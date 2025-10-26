@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj": {}
+    "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\SISTEMAMEDICO\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj": {
+    "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\SISTEMAMEDICO\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj",
+        "projectUniqueName": "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\SISTEMAMEDICO\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
         "projectName": "Lab01-Grupal",
-        "projectPath": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\Lab01-Grupal.csproj",
-        "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pc\\Documents\\Progra 1 trabajos\\Lab01-Grupal\\obj\\",
+        "projectPath": "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\SISTEMAMEDICO\\EntregableGrupal-Lab01\\Lab01-Grupal.csproj",
+        "packagesPath": "C:\\Users\\USUARIO\\.nuget\\packages\\",
+        "outputPath": "E:\\ing sistemas\\Guias by Elliot\\Trabajos\\Programacion\\SISTEMAMEDICO\\EntregableGrupal-Lab01\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\USUARIO\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
