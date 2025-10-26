@@ -59,21 +59,25 @@ public AdminController(
 
             return View(citas);
         }
-
+        // Lista usuarios con filtrado opcional por nombre/usuario
         [HttpGet]
-        public async Task<IActionResult> ListaUsuarios()
+        [Route("Admin/ListaUsuarios")]
+        public async Task<IActionResult> ListaUsuarios(string? nombre = null)
         {
-            var cacheKey = "admin:usuarios:lista";
+            var normalized = string.IsNullOrWhiteSpace(nombre) ? null : nombre.Trim();
+            var cacheKey = normalized == null
+                ? "admin:usuarios:lista"
+                : $"admin:usuarios:lista:search:{normalized.ToLowerInvariant()}";
 
             try
             {
-                // Intentar obtener desde cache
                 var cached = await _cache.GetStringAsync(cacheKey);
                 if (!string.IsNullOrEmpty(cached))
                 {
-                    _logger.LogInformation("Cache hit ListaUsuarios");
+                    _logger.LogInformation("Cache hit ListaUsuarios (search: {Search})", normalized);
                     var cachedList = JsonSerializer.Deserialize<List<Usuario>>(cached, _jsonOptions)
                                      ?? new List<Usuario>();
+                    ViewData["Search"] = normalized;
                     return View(cachedList);
                 }
             }
@@ -82,9 +86,18 @@ public AdminController(
                 _logger.LogWarning(ex, "Error leyendo cache en ListaUsuarios; proceder a DB");
             }
 
-            // Cache miss -> consultar DB con proyección explícita para evitar entidades tracked/proxies
-            var usuarios = await _context.Set<Usuario>()
-                .Where(u => u.Rol == "usuario")
+            var query = _context.Set<Usuario>()
+                .Where(u => u.Rol == "usuario");
+
+            if (!string.IsNullOrWhiteSpace(normalized))
+            {
+                var lower = normalized.ToLowerInvariant();
+                query = query.Where(u =>
+                    (u.Nombre != null && EF.Functions.Like(u.Nombre.ToLower(), $"%{lower}%")) ||
+                    (u.UsuarioNombre != null && EF.Functions.Like(u.UsuarioNombre.ToLower(), $"%{lower}%")));
+            }
+
+            var usuarios = await query
                 .Select(u => new Usuario
                 {
                     IdUsuario = u.IdUsuario,
@@ -92,12 +105,10 @@ public AdminController(
                     Nombre = u.Nombre,
                     Correo = u.Correo,
                     Rol = u.Rol
-                    // No incluyas Clave por seguridad
                 })
                 .AsNoTracking()
                 .ToListAsync();
 
-            // Guardar en cache (JSON)
             try
             {
                 var serialized = JsonSerializer.Serialize(usuarios, _jsonOptions);
@@ -106,13 +117,14 @@ public AdminController(
                     AbsoluteExpirationRelativeToNow = _cacheTtl
                 };
                 await _cache.SetStringAsync(cacheKey, serialized, options);
-                _logger.LogInformation("ListaUsuarios guardada en cache");
+                _logger.LogInformation("ListaUsuarios guardada en cache (search: {Search})", normalized);
             }
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "Error guardando cache en ListaUsuarios");
             }
 
+            ViewData["Search"] = normalized;
             return View(usuarios);
         }
 
