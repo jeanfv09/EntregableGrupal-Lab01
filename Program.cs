@@ -9,6 +9,7 @@ using Lab01_Grupo1.Services;
 using Braintree;
 // 🔹 Agregar el using para NoticiasMedicas
 using NoticiasMedicas.Services;
+using static Lab01_Grupo1.Models.MLModel;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -111,6 +112,9 @@ catch
 {
     // keep memory cache already registered as fallback
 }
+builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
+    .FromFile(modelName: "Prueba", filePath: "Prueba", watchForChanges: true);
+
 
 var app = builder.Build();
 

@@ -13,6 +13,8 @@ namespace Lab01_Grupo1.Models
 
         [Required(ErrorMessage = "El mensaje es obligatorio")]
         public string Mensaje { get; set; } = string.Empty;
-        
+    // Propiedades para mostrar el resultado de ML en la vista
+    public string? ResultadoSentimiento { get; set; }
+    public float? Confidence { get; set; }
     }
 }
