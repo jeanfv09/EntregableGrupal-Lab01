@@ -112,8 +112,7 @@ catch
 {
     // keep memory cache already registered as fallback
 }
-builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
-    .FromFile(modelName: "Prueba", filePath: "Prueba", watchForChanges: true);
+
 
 
 var app = builder.Build();
