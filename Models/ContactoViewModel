@@ -1,0 +1,16 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Lab01_Grupo1.Models
+{
+    public class ContactoViewModel
+    {
+        public string Nombre { get; set; } = string.Empty;
+        public string Correo { get; set; } = string.Empty;
+        public string Mensaje { get; set; } = string.Empty;
+
+        // Propiedades para mostrar el resultado de ML en la vista
+        public string? ResultadoSentimiento { get; set; }
+        public float? Confidence { get; set; }
+    }
+}

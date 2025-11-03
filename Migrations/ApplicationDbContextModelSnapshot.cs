@@ -145,6 +145,10 @@ namespace Lab01_Grupal.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Sentimiento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("TEXT");

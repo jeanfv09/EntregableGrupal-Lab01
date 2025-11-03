@@ -16,9 +16,14 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.ML" Version="2.0.1" />
+    <PackageReference Include="Microsoft.ML" Version="4.0.3" />
+    <PackageReference Include="Microsoft.ML.TorchSharp" Version="0.22.3" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.66.0" />
     <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.66.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.9.24" />
+
+    
   </ItemGroup>
 
 </Project>

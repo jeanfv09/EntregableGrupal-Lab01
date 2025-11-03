@@ -175,29 +175,85 @@ public class UsuariosController : Controller
     {
         return View();
     }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Contacto(ContactoViewModel model)
-    {
-        if (ModelState.IsValid)
-        {
-            var contacto = new Contacto
-            {
-                Nombre = model.Nombre,
-                Correo = model.Correo,
-                Mensaje = model.Mensaje,
-                FechaEnviado = DateTime.Now
-            };
-
-            _context.Contactos.Add(contacto);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Gracias");
-        }
-
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Contacto(ContactoViewModel model)
+{
+    if (!ModelState.IsValid)
         return View(model);
+
+    // declarar contacto en scope del método
+    var contacto = new Contacto
+    {
+        Nombre = model.Nombre,
+        Correo = model.Correo,
+        Mensaje = model.Mensaje,
+        FechaEnviado = DateTime.Now
+    };
+
+    // declarar variables que usaremos fuera de bloques
+    KeyValuePair<string, float> top = default;
+    string? labelText = null;
+    float? score = null;
+
+    try
+    {
+        var sampleData = new MLModel.ModelInput { Comentario = contacto.Mensaje ?? string.Empty };
+        var labeledScores = MLModel.PredictAllLabels(sampleData);
+
+        // obtenemos top si existe
+        top = labeledScores.FirstOrDefault();
+        if (!top.Equals(default(KeyValuePair<string, float>)))
+        {
+            var labelKey = (top.Key ?? string.Empty).Trim();
+
+            if (labelKey.Equals("1", StringComparison.OrdinalIgnoreCase)
+                || labelKey.Equals("1.0", StringComparison.OrdinalIgnoreCase)
+                || labelKey.Equals("Positivo", StringComparison.OrdinalIgnoreCase)
+                || labelKey.Equals("Bueno", StringComparison.OrdinalIgnoreCase))
+            {
+                labelText = "Positivo";
+            }
+            else if (labelKey.Equals("0", StringComparison.OrdinalIgnoreCase)
+                || labelKey.Equals("0.0", StringComparison.OrdinalIgnoreCase)
+                || labelKey.Equals("Negativo", StringComparison.OrdinalIgnoreCase)
+                || labelKey.Equals("Malo", StringComparison.OrdinalIgnoreCase))
+            {
+                labelText = "Negativo";
+            }
+            else
+            {
+                labelText = labelKey; // fallback
+            }
+
+            score = top.Value;
+        }
     }
+    catch (Exception ex)
+    {
+        // log explícito para diagnóstico
+        Console.WriteLine($"ERROR ML Predict: {ex.Message}");
+    }
+
+    // Asignar siempre (puede ser null)
+    contacto.Sentimiento = labelText;
+    contacto.ScorePrediccion = score;
+
+    // DIAGNÓSTICO: imprimir antes de guardar
+    Console.WriteLine($"DEBUG to-save => Sentimiento:'{contacto.Sentimiento ?? "<null>"}', Score:{contacto.ScorePrediccion?.ToString() ?? "<null>"}");
+
+    _context.Contactos.Add(contacto);
+    var rows = await _context.SaveChangesAsync();
+    Console.WriteLine($"DEBUG DB => SaveChangesAsync returned {rows}");
+
+    // rellenar viewmodel para mostrar en la vista
+    model.ResultadoSentimiento = contacto.Sentimiento;
+    model.Confidence = contacto.ScorePrediccion;
+
+    return View(model);
+}
+
+
 
     [HttpGet]
     public IActionResult Gracias()

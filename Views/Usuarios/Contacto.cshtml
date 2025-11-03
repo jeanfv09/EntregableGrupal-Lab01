@@ -51,6 +51,14 @@
         background: #00b4d8;
         transform: translateY(-3px);
     }
+
+    .result-box {
+        margin-top: 20px;
+        padding: 15px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 8px;
+        color: #fff;
+    }
 </style>
 
 <h2 class="section-title">📧 Contáctanos</h2>
@@ -77,9 +85,16 @@
 
         <button type="submit" class="btn-custom">Enviar</button>
     </form>
+
+        @if (!string.IsNullOrEmpty(Model?.ResultadoSentimiento))
+            {
+                <div class="result-box">
+                    <strong>Sentimiento detectado:</strong> @Model.ResultadoSentimiento<br />
+                    <strong>Confianza:</strong> @String.Format("{0:P1}", Model.Confidence ?? 0)
+                </div>
+            }
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
