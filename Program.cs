@@ -9,8 +9,9 @@ using Lab01_Grupo1.Services;
 using Braintree;
 // 🔹 Agregar el using para NoticiasMedicas
 using NoticiasMedicas.Services;
+// 🔹 Agregar el using del modelo ML.NET
+using Lab01_Grupo1.Models;
 using static Lab01_Grupo1.Models.MLModel;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +43,6 @@ builder.Services.AddSingleton<IBraintreeGateway>(provider =>
 
     return new BraintreeGateway
     {
-        // CORRECCIÓN CS0104: Usamos Braintree.Environment.SANDBOX/PRODUCTION
         Environment = environment,
         MerchantId = config["Braintree:MerchantId"],
         PublicKey = config["Braintree:PublicKey"],
@@ -61,6 +61,9 @@ builder.Services.AddSingleton<SemanticKernelService>();
 builder.Services.AddScoped<ChatService>();
 
 builder.Services.AddHttpClient<OpenFDAService>(); //API OPENFDA
+
+// 🔹 Servicio del modelo ML.NET
+builder.Services.AddSingleton<MLModelService>(); // ✅ agregado correctamente
 
 builder.Services.AddHttpClient<OpenFDAService>(client =>
 {
@@ -112,8 +115,6 @@ catch
 {
     // keep memory cache already registered as fallback
 }
-
-
 
 var app = builder.Build();
 

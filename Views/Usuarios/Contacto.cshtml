@@ -64,7 +64,7 @@
 <h2 class="section-title">📧 Contáctanos</h2>
 
 <div class="form-container">
-    <form asp-action="Contacto" method="post">
+    <form asp-controller="Contacto" asp-action="Index" method="post">
         <div class="mb-3">
             <label asp-for="Nombre" class="form-label"></label>
             <input asp-for="Nombre" class="form-control" />
