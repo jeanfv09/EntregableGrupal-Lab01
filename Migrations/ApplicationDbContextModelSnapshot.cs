@@ -40,7 +40,7 @@ namespace Lab01_Grupal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChatMessages");
+                    b.ToTable("ChatMessages", (string)null);
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.Cita", b =>
@@ -121,7 +121,7 @@ namespace Lab01_Grupal.Migrations
 
                     b.HasIndex("IdPaciente");
 
-                    b.ToTable("Cita");
+                    b.ToTable("Cita", (string)null);
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.Contacto", b =>
@@ -155,7 +155,7 @@ namespace Lab01_Grupal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contactos");
+                    b.ToTable("Contactos", (string)null);
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.Medico", b =>
@@ -178,7 +178,7 @@ namespace Lab01_Grupal.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("Medico");
+                    b.ToTable("Medico", (string)null);
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.PerfilMedico", b =>
@@ -232,7 +232,7 @@ namespace Lab01_Grupal.Migrations
                     b.HasIndex("IdMedico")
                         .IsUnique();
 
-                    b.ToTable("Perfil_Medico");
+                    b.ToTable("Perfil_Medico", (string)null);
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.TelefonoMedico", b =>
@@ -255,7 +255,7 @@ namespace Lab01_Grupal.Migrations
 
                     b.HasIndex("IdMedico");
 
-                    b.ToTable("Telefono_Medico");
+                    b.ToTable("Telefono_Medico", (string)null);
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.Usuario", b =>
@@ -295,7 +295,7 @@ namespace Lab01_Grupal.Migrations
 
                     b.HasKey("IdUsuario");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("Lab01_Grupo1.Models.Cita", b =>

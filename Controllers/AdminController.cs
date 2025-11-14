@@ -142,7 +142,7 @@ namespace Lab01_Grupo1.Controllers
             ViewData["Search"] = normalized;
             return View(usuarios);
         }
-
+        
         // ✅ Registro de Contactos
         [HttpGet]
         public async Task<IActionResult> RegistroContacto()

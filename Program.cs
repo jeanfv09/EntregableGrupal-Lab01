@@ -17,6 +17,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// 🔹 Registro del servicio OllamaService
+builder.Services.AddSingleton<OllamaService>();
+builder.Services.AddSingleton<CacheService>();
+
+builder.Services.AddHttpClient();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // 🔹 Necesario para inyectar IHttpContextAccessor en Razor (@inject)
@@ -25,18 +31,16 @@ builder.Services.AddHttpContextAccessor();
 // 🔹 Cache para que funcionen las sesiones
 builder.Services.AddDistributedMemoryCache();
 
-// 🔹 REGISTRAR EL SERVICIO DE NOTICIAS MÉDICAS (agregar esta línea)
+// 🔹 REGISTRAR EL SERVICIO DE NOTICIAS MÉDICAS
 builder.Services.AddHttpClient<MedicalNewsService>();
 
 // =========================================================
 // 💳 CONFIGURACIÓN DEL CLIENTE BRAINTREE
 // =========================================================
-// Registra IBraintreeGateway como Singleton (se crea una vez)
 builder.Services.AddSingleton<IBraintreeGateway>(provider =>
 {
     var config = provider.GetRequiredService<IConfiguration>();
 
-    // CORRECCIÓN CS0104: Usamos Braintree.Environment para evitar la ambigüedad con System.Environment
     Braintree.Environment environment = config["Braintree:Environment"]?.ToLower() == "production"
     ? Braintree.Environment.PRODUCTION
     : Braintree.Environment.SANDBOX;
@@ -47,23 +51,21 @@ builder.Services.AddSingleton<IBraintreeGateway>(provider =>
         MerchantId = config["Braintree:MerchantId"],
         PublicKey = config["Braintree:PublicKey"],
         PrivateKey = config["Braintree:PrivateKey"],
-        // 🚨 CAMBIO FINAL: Se elimina la propiedad 'PayPalMerchantAccountId' que causó el error CS0117.
-        // La habilitación de PayPal debe manejarse en el lado del cliente (JavaScript) usando el token generado.
     };
 });
 
-// CORRECCIÓN CS0104: Usamos el namespace completo para nuestro servicio
+// CORRECCIÓN CS0104
 builder.Services.AddScoped<Lab01_Grupo1.Services.BraintreeService>(); 
 // =========================================================
 
-// 🧠 Agregamos el servicio del Chatbot con OpenAI (SemanticKernelService)
+// 🧠 Servicio Chatbot OpenAI
 builder.Services.AddSingleton<SemanticKernelService>();
 builder.Services.AddScoped<ChatService>();
 
 builder.Services.AddHttpClient<OpenFDAService>(); //API OPENFDA
 
 // 🔹 Servicio del modelo ML.NET
-builder.Services.AddSingleton<MLModelService>(); // ✅ agregado correctamente
+builder.Services.AddSingleton<MLModelService>();
 
 builder.Services.AddHttpClient<OpenFDAService>(client =>
 {
@@ -72,21 +74,27 @@ builder.Services.AddHttpClient<OpenFDAService>(client =>
     client.Timeout = TimeSpan.FromSeconds(30);
 });
 
-// 🔹 Configuración de la sesión
+// 🔹 Sesión
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Sesión dura 30 min
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
-// 1) Configuración servicios (DbContext, Identity si aplica, Cache, Session, Redis)
+// 👉👉👉 **AQUÍ AGREGO TU CÓDIGO DE OLLAMA**
+// ============================================================
+builder.Services.Configure<OllamaSettings>(
+    builder.Configuration.GetSection("Ollama"));
+
+builder.Services.AddSingleton<OllamaService>();
+// ============================================================
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-
-// Redis - IMPORTANT: register BEFORE builder.Build()
+// Redis
 var redisHost = builder.Configuration["Redis:Host"];
 var redisPort = builder.Configuration.GetValue<int>("Redis:Port", 6379);
 var redisUser = builder.Configuration["Redis:User"];
@@ -113,15 +121,14 @@ try
 }
 catch
 {
-    // keep memory cache already registered as fallback
+    // fallback
 }
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure pipeline
 if (app.Environment.IsDevelopment())
 {
-    // 🔹 Página de errores detallados en desarrollo
     app.UseDeveloperExceptionPage();
 }
 else
@@ -134,10 +141,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-// 🔹 Habilitar sesiones ANTES de Authorization
 app.UseSession();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

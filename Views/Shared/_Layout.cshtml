@@ -16,41 +16,155 @@
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .navbar {
             background: linear-gradient(90deg, #ffffff, #e9f5ff);
         }
+
         .navbar-brand {
             font-weight: bold;
             color: #0077b6 !important;
         }
+
         .nav-link {
             color: #495057 !important;
             transition: color 0.3s ease;
         }
+
         .nav-link:hover {
             color: #0077b6 !important;
         }
+
         footer {
             background-color: #ffffff;
             border-top: 1px solid #dee2e6;
         }
+
         footer small {
             color: #6c757d;
         }
+
         footer a {
             color: #0077b6;
             text-decoration: none;
         }
+
         footer a:hover {
             text-decoration: underline;
         }
+
+        /* ===========================================================
+           🔵 ASISTENTE MÉDICO - ESTILOS PRINCIPALES
+        ============================================================ */
+
+        #assistant-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0077b6;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 9999;
+        }
+
+        #assistant-window {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            width: 320px;
+            height: 400px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        #assistant-header {
+            background: #0077b6;
+            padding: 10px;
+            color: white;
+            font-weight: bold;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+
+        #assistant-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            color: black;
+            font-size: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #assistant-input-area {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        #assistant-input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            outline: none;
+        }
+
+        #assistant-send {
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        /* ===========================================================
+           💬 ESTILOS DE BURBUJAS TIPO CHAT
+        ============================================================ */
+
+        /* Usuario */
+        .msg-user {
+            background: #cde6ff;
+            color: black;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin: 6px 0;
+            max-width: 75%;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        /* Asistente */
+        .msg-bot {
+            background: #e9ecef;
+            color: black;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin: 6px 0;
+            max-width: 75%;
+            align-self: flex-start;
+        }
+
     </style>
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
 <header>
     <nav class="navbar navbar-expand-lg shadow-sm">
         <div class="container">
+
             @if (HttpContextAccessor.HttpContext.Session.GetString("UsuarioNombre") != null)
             {
                 var rol = HttpContextAccessor.HttpContext.Session.GetString("UsuarioRol");
@@ -70,7 +184,6 @@
             }
             else
             {
-                <!-- 🔹 No hace nada si no está logeado -->
                 <a class="navbar-brand" href="javascript:void(0)">
                     <i class="bi bi-heart-pulse me-2"></i> E-CORP
                 </a>
@@ -112,23 +225,38 @@
                     }
                 </ul>
             </div>
+
         </div>
     </nav>
 </header>
 
 
+<main role="main" class="flex-grow-1 container py-4">
+    @RenderBody()
+</main>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
 
-    <!-- Main -->
-    <main role="main" class="flex-grow-1 container py-4">
-        @RenderBody()
-    </main>
+<!-- ===========================================================
+     🩺 ASISTENTE MÉDICO
+=========================================================== -->
 
-    <!-- Scripts -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<div id="assistant-button" title="Asistente Médico">🩺</div>
+
+<div id="assistant-window">
+    <div id="assistant-header">Asistente Médico - MedAssist</div>
+    <div id="assistant-messages"></div>
+
+    <div id="assistant-input-area">
+        <input type="text" id="assistant-input" placeholder="¿En qué puedo ayudarte?" />
+        <button id="assistant-send">Enviar</button>
+    </div>
+</div>
+
+<script src="~/js/assistant.js"></script>
 
 </body>
 </html>
