@@ -2,7 +2,7 @@ Render:
 https://entregablegrupal-lab01-2-17wa.onrender.com
 
 
-🏥 Examen Parcial: Sistema Médico — Gestión de Consultas y Pacientes
+🏥 Examen Final: Sistema Médico — Gestión de Consultas y Pacientes
 
 Stack: ASP.NET Core MVC (.NET 8) + Identity + EF Core (MySQL o SQLite) + Redis (sesiones/cache) + Razor Views
 Infraestructura: Render.com (Web Service)
