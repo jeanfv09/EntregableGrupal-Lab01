@@ -1,8 +1,6 @@
 using Lab01_Grupo1.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http; 
-using StackExchange.Redis;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Lab01_Grupo1.Configuration;
 using Lab01_Grupo1.Services;
@@ -93,36 +91,6 @@ builder.Services.AddSingleton<OllamaService>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
-
-// Redis
-var redisHost = builder.Configuration["Redis:Host"];
-var redisPort = builder.Configuration.GetValue<int>("Redis:Port", 6379);
-var redisUser = builder.Configuration["Redis:User"];
-var redisPassword = builder.Configuration["Redis:Password"];
-
-try
-{
-    var configurationOptions = new ConfigurationOptions
-    {
-        AbortOnConnectFail = false,
-        ConnectTimeout = 5000
-    };
-    configurationOptions.EndPoints.Add(redisHost, redisPort);
-    configurationOptions.User = redisUser;
-    configurationOptions.Password = redisPassword;
-
-    builder.Services.AddStackExchangeRedisCache(options =>
-    {
-        options.ConfigurationOptions = configurationOptions;
-    });
-
-    builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-        ConnectionMultiplexer.Connect(configurationOptions));
-}
-catch
-{
-    // fallback
-}
 
 var app = builder.Build();
 

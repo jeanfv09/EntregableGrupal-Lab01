@@ -10,16 +10,11 @@
 {
     <div class="alert alert-success">@TempData["Mensaje"]</div>
 }
-<div class="col-6 col-md-3">
-    <a asp-controller="Admin" asp-action="ListaCitas" class="btn btn-custom w-100">
-        <span>📅</span> Ver Citas
-    </a>
-</div>
+
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Código</th>
             <th>Paciente</th>
             <th>Médico</th>
             <th>Especialidad</th>
@@ -32,7 +27,6 @@
     @foreach (var cita in Model)
     {
         <tr>
-            <td>@cita.CodigoCita</td>
             <td>@cita.Paciente?.Nombre (@cita.Paciente?.Correo)</td>
             <td>@cita.Medico?.Usuario?.Nombre</td>
             <td>@cita.Especialidad</td>

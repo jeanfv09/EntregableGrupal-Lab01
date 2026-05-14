@@ -33,7 +33,6 @@
             <th>Nombre</th>
             <th>Correo</th>
             <th>Rol</th>
-            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -47,10 +46,6 @@
                     <td>@usuario.Nombre</td>
                     <td>@usuario.Correo</td>
                     <td>@usuario.Rol</td>
-                    <td>
-                        <a asp-action="Editar" asp-route-id="@usuario.IdUsuario" class="btn btn-warning btn-sm">Editar</a>
-                        <a asp-action="Eliminar" asp-route-id="@usuario.IdUsuario" class="btn btn-danger btn-sm">Eliminar</a>
-                    </td>
                 </tr>
             }
         }
